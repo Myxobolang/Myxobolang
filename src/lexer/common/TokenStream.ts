@@ -25,17 +25,17 @@ export abstract class TokenStream<T extends Token = Token> {
         let out = `${this.language}`;
         let lastRow = -1;
         for (let i = 0; i < this.tokens.length; i++) {
-            const row = this.tokens[i].row;
+            const token = this.tokens[i];
             if (row != lastRow) {
-                out += `{[row][${row}]}`;
+                out += `{[row][${token.row}]}`;
                 lastRow = row;
             }
-            const tokenBody = this.tokens[i].kudoaBody;
+            const tokenBody = token.kudoaBody;
             let temp = `[${tokenBody.length}]`;
             for (let j = 0; j < tokenBody.length; j++) {
                 temp += `[${tokenBody[j]}]`;
             }
-            out += `{[token]${temp}}`;
+            out += `{[token][${token.col}]${temp}}`;
         }
         return out;
     }
