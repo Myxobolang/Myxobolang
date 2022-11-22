@@ -32,7 +32,7 @@ export abstract class TokenStream<T extends Token = Token> {
             }
             const tokenBody = this.tokens[i].kudoaBody;
             let temp = `[${tokenBody.length}]`;
-            for (let j = 0; j < this.tokens.length; j++) {
+            for (let j = 0; j < tokenBody.length; j++) {
                 temp += `[${tokenBody[j]}]`;
             }
             out += `{[token]${temp}}`;
