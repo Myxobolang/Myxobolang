@@ -22,21 +22,34 @@ export abstract class TokenStream<T extends Token = Token> {
     }
 
     toKudoa() {
-        let out = `${this.language}`;
+        let out = `{[lang][${this.language}]}`;
         let lastRow = -1;
         for (let i = 0; i < this.tokens.length; i++) {
             const token = this.tokens[i];
-            if (row != lastRow) {
+            if (token.row != lastRow) {
                 out += `{[row][${token.row}]}`;
-                lastRow = row;
+                lastRow = token.row;
             }
             const tokenBody = token.kudoaBody;
             let temp = `[${tokenBody.length}]`;
             for (let j = 0; j < tokenBody.length; j++) {
-                temp += `[${tokenBody[j]}]`;
+                temp += `[${TokenStream.genString(tokenBody[j])}]`;
             }
             out += `{[token][${token.col}]${temp}}`;
         }
         return out;
+    }
+
+    private static genString(str: string) {
+        if (/^(lang)|(row)|(token)$/.test(str) || str.charAt(0) == ':') {
+            return `:${str}`;
+        }
+        return str
+            .replace(/\\/g, '\\\\')
+            .replace(/\n/g, '\\n')
+            .replace(/\{/g, '\\{')
+            .replace(/\}/g, '\\}')
+            .replace(/\[/g, '\\[')
+            .replace(/\]/g, '\\]');
     }
 }
