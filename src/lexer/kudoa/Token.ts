@@ -11,37 +11,68 @@ export enum TokenType {
     STR,
 }
 
-interface LSBRToken extends CommonToken<TokenType> {
-    type: TokenType.LSBR;
+export class LSBRToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return [];
+    }
+    type = TokenType.LSBR;
 }
 
-interface RSBRToken extends CommonToken<TokenType> {
-    type: TokenType.RSBR;
+export class RSBRToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return [];
+    }
+    type = TokenType.RSBR;
 }
 
-interface LCBRToken extends CommonToken<TokenType> {
-    type: TokenType.LCBR;
+export class LCBRToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return [];
+    }
+    type = TokenType.LCBR;
 }
 
-interface RCBRToken extends CommonToken<TokenType> {
-    type: TokenType.RCBR;
+export class RCBRToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return [];
+    }
+    type = TokenType.RCBR;
 }
 
-interface LangToken extends CommonToken<TokenType> {
-    type: TokenType.LANG;
+export class LangToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return [];
+    }
+    type = TokenType.LANG;
 }
 
-interface RowToken extends CommonToken<TokenType> {
-    type: TokenType.ROW;
+export class RowToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return [];
+    }
+    type = TokenType.ROW;
 }
 
-interface TokenToken extends CommonToken<TokenType> {
-    type: TokenType.TOKEN;
+export class TokenToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return [];
+    }
+    type = TokenType.TOKEN;
 }
 
-interface StrToken extends CommonToken<TokenType> {
-    type: TokenType.STR;
-    value: string;
+export class StrToken implements CommonToken<TokenType> {
+    constructor(public row: number, public col: number, public value: string) {}
+    get kudoaBody(): string[] {
+        return [this.value];
+    }
+    type = TokenType.STR;
 }
 
 export type Token = LSBRToken | RSBRToken | LCBRToken | RCBRToken | LangToken | RowToken | TokenToken | StrToken;

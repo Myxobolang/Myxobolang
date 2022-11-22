@@ -1,6 +1,16 @@
 import { Lexer as CommonLexer, LexerError } from '../common';
 import { StrLexer } from './StrLexer';
-import { TokenType } from './Token';
+import {
+    LangToken,
+    LCBRToken,
+    LSBRToken,
+    RCBRToken,
+    RowToken,
+    RSBRToken,
+    StrToken,
+    TokenToken,
+    TokenType,
+} from './Token';
 import { TokenStream } from './TokenStream';
 
 interface LexResult {
@@ -24,23 +34,23 @@ export class Lexer extends CommonLexer<TokenStream> {
         let result: LexResult;
         while ((result = cppLib.lex(lexer)).result != 0) {
             if (result.result == TokenType.LSBR) {
-                stream.add({ type: TokenType.LSBR, row: result.row, col: result.col });
+                stream.add(new LSBRToken(result.row, result.col));
             } else if (result.result == TokenType.RSBR) {
-                stream.add({ type: TokenType.RSBR, row: result.row, col: result.col });
+                stream.add(new RSBRToken(result.row, result.col));
             } else if (result.result == TokenType.LCBR) {
-                stream.add({ type: TokenType.LCBR, row: result.row, col: result.col });
+                stream.add(new LCBRToken(result.row, result.col));
             } else if (result.result == TokenType.RCBR) {
-                stream.add({ type: TokenType.RCBR, row: result.row, col: result.col });
+                stream.add(new RCBRToken(result.row, result.col));
             } else if (result.result == TokenType.LANG) {
-                stream.add({ type: TokenType.LANG, row: result.row, col: result.col });
+                stream.add(new LangToken(result.row, result.col));
             } else if (result.result == TokenType.ROW) {
-                stream.add({ type: TokenType.ROW, row: result.row, col: result.col });
+                stream.add(new RowToken(result.row, result.col));
             } else if (result.result == TokenType.TOKEN) {
-                stream.add({ type: TokenType.TOKEN, row: result.row, col: result.col });
+                stream.add(new TokenToken(result.row, result.col));
             } else if (result.result == TokenType.STR) {
                 try {
                     const text = StrLexer.lex(result.text);
-                    stream.add({ type: TokenType.STR, row: result.row, col: result.col, value: text });
+                    stream.add(new StrToken(result.row, result.col, text));
                 } catch (e) {
                     if (e instanceof Error) {
                         throw new LexerError(result.text, result.row, result.col, e);

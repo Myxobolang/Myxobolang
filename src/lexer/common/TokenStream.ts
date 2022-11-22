@@ -22,6 +22,21 @@ export abstract class TokenStream<T extends Token = Token> {
     }
 
     toKudoa() {
-        return null;
+        let out = `${this.language}`;
+        let lastRow = -1;
+        for (let i = 0; i < this.tokens.length; i++) {
+            const row = this.tokens[i].row;
+            if (row != lastRow) {
+                out += `{[row][${row}]}`;
+                lastRow = row;
+            }
+            const tokenBody = this.tokens[i].kudoaBody;
+            let temp = `[${tokenBody.length}]`;
+            for (let j = 0; j < this.tokens.length; j++) {
+                temp += `[${tokenBody[j]}]`;
+            }
+            out += `{[token]${temp}}`;
+        }
+        return out;
     }
 }
