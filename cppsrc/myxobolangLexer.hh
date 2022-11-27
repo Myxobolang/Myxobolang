@@ -3,6 +3,14 @@
 
 #include <napi.h>
 
+#ifndef __FLEX_LEXER_H
+class yyFlexLexer
+{
+public:
+    yyFlexLexer(std::istream *in);
+}
+#endif
+
 class MyxobolangLexer : public yyFlexLexer
 {
 private:
