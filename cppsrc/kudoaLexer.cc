@@ -1,12 +1,14 @@
 #include <FlexLexer.h>
 #include "kudoaLexer.hh"
 
+#undef yyFlexLexer
+#define yyFlexLexer klFlexLexer
+
 #include <fstream>
 
 using namespace Napi;
-using namespace kudoaLexer;
 
-External<KudoaLexer> initLexer(const CallbackInfo &info)
+External<KudoaLexer> kudoaLexer::initLexer(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() == 1)
@@ -26,7 +28,7 @@ External<KudoaLexer> initLexer(const CallbackInfo &info)
     return External<KudoaLexer>::New(env, lexer);
 }
 
-void deleteLexer(const CallbackInfo &info)
+void kudoaLexer::deleteLexer(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() < 1 || !info[0].IsExternal())
@@ -36,7 +38,7 @@ void deleteLexer(const CallbackInfo &info)
     delete lexer;
 }
 
-Object lex(const CallbackInfo &info)
+Object kudoaLexer::lex(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() < 1 || !info[0].IsExternal())
@@ -57,11 +59,10 @@ Object lex(const CallbackInfo &info)
     return out;
 }
 
-
-Object init(Env env, Object exports)
+Object kudoaLexer::init(Env env, Object exports)
 {
-    exports.Set("initLexer", Function::New(env, initLexer));
-    exports.Set("deleteLexer", Function::New(env, deleteLexer));
-    exports.Set("lex", Function::New(env, lex));
+    exports.Set("initLexer", Function::New(env, kudoaLexer::initLexer));
+    exports.Set("deleteLexer", Function::New(env, kudoaLexer::deleteLexer));
+    exports.Set("lex", Function::New(env, kudoaLexer::lex));
     return exports;
 }

@@ -4,7 +4,7 @@
 
 using namespace Napi;
 
-Object init(Env env, Object exports)
+Object initMain(Env env, Object exports)
 {
     Object temp;
     temp = Object::New(env);
@@ -13,6 +13,7 @@ Object init(Env env, Object exports)
     temp = Object::New(env);
     myxobolangLexer::init(env, temp);
     exports.Set("myxobolangLexer", temp);
+    return exports;
 }
 
-NODE_API_MODULE(NODE_GYP_MODULE_NAME, init)
+NODE_API_MODULE(NODE_GYP_MODULE_NAME, initMain)

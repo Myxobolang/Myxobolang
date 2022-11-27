@@ -8,7 +8,8 @@
             "cppbuild/kudoa.lex.yy.cc",
             "cppsrc/myxobolangLexer.cc",
             "cppbuild/myxobolang.lex.yy.cc",
-            "cppsrc/main.cc"
+            "cppsrc/main.cc",
+            "cppbuild/useless.lex.yy.cc"
         ],
         "include_dirs": [
             "<!@(node -p \"require('node-addon-api').include\")",
@@ -30,6 +31,12 @@
                 "action_name": "flex_myxobolang",
                 "inputs": ["cppsrc/myxobolangLexer.l"],
                 "outputs": ["cppbuild/myxobolang.lex.yy.cc"],
+                "action": ["flex", "-+", "-o", "<@(_outputs)", "<@(_inputs)"]
+            },
+            {
+                "action_name": "flex_useless",
+                "inputs": ["cppsrc/useless.l"],
+                "outputs": ["cppbuild/useless.lex.yy.cc"],
                 "action": ["flex", "-+", "-o", "<@(_outputs)", "<@(_inputs)"]
             }
         ]

@@ -1,5 +1,5 @@
-#ifndef __MYXOBOLANGLEXER_HH__
-#define __MYXOBOLANGLEXER_HH__
+#ifndef __MYXOBOLANG_LEXER_HH__
+#define __MYXOBOLANG_LEXER_HH__
 
 #include <napi.h>
 
@@ -16,11 +16,12 @@ public:
     int yylex();
 };
 
-namespace myxobolangLexer {
-    extern External<MyxobolangLexer> initLexer(const CallbackInfo &info);
-    extern void deleteLexer(const CallbackInfo &info);
-    extern Object lex(const CallbackInfo &info);
-    extern Napi::Object init(Napi::Env env, Napi::Object exports);
+namespace myxobolangLexer
+{
+    Napi::External<MyxobolangLexer> initLexer(const Napi::CallbackInfo &info);
+    void deleteLexer(const Napi::CallbackInfo &info);
+    Napi::Object lex(const Napi::CallbackInfo &info);
+    Napi::Object init(Napi::Env env, Napi::Object exports);
 }
 
 #endif

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "new": "cpp",
+        "fstream": "cpp"
+    },
+    "cSpell.words": ["cflags"]
+}

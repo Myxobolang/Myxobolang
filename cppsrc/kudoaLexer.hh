@@ -1,5 +1,5 @@
-#ifndef __KUDOALEXER_HH__
-#define __KUDOALEXER_HH__
+#ifndef __KUDOA_LEXER_HH__
+#define __KUDOA_LEXER_HH__
 
 #include <napi.h>
 
@@ -16,10 +16,11 @@ public:
     int yylex();
 };
 
-namespace kudoaLexer {
-    External<KudoaLexer> initLexer(const CallbackInfo &info);
-    void deleteLexer(const CallbackInfo &info);
-    Object lex(const CallbackInfo &info);
+namespace kudoaLexer
+{
+    Napi::External<KudoaLexer> initLexer(const Napi::CallbackInfo &info);
+    void deleteLexer(const Napi::CallbackInfo &info);
+    Napi::Object lex(const Napi::CallbackInfo &info);
     Napi::Object init(Napi::Env env, Napi::Object exports);
 }
 #endif

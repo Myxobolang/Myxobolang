@@ -1,6 +1,9 @@
 #include <FlexLexer.h>
 #include "myxobolangLexer.hh"
 
+#undef yyFlexLexer
+#define yyFlexLexer mlFlexLexer
+
 #include <fstream>
 
 using namespace Napi;
@@ -56,15 +59,10 @@ Object myxobolangLexer::lex(const CallbackInfo &info)
     return out;
 }
 
-void test() {
-    int a = 1;
-    a += 1;
-}
-
-Object init(Env env, Object exports)
+Object myxobolangLexer::init(Env env, Object exports)
 {
     exports.Set("initLexer", Function::New(env, myxobolangLexer::initLexer));
-    exports.Set("deleteLexer", Function::New(env, deleteLexer));
-    exports.Set("lex", Function::New(env, lex));
+    exports.Set("deleteLexer", Function::New(env, myxobolangLexer::deleteLexer));
+    exports.Set("lex", Function::New(env, myxobolangLexer::lex));
     return exports;
 }
