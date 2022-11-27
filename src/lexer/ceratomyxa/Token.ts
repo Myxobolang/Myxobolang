@@ -1,6 +1,8 @@
 import type { Token as CommonToken } from '../common';
 export enum Tokentype {
     MACRO = 1,
+    AS,
+    ENDM,
     M,
     V,
 }
@@ -10,6 +12,22 @@ export class MacroToken implements CommonToken<Tokentype> {
     constructor(public row: number, public col: number) {}
     get kudoaBody(): string[] {
         return ['macro'];
+    }
+}
+
+export class AsToken implements CommonToken<Tokentype> {
+    type = Tokentype.AS;
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return ['as'];
+    }
+}
+
+export class EndmToken implements CommonToken<Tokentype> {
+    type = Tokentype.MACRO;
+    constructor(public row: number, public col: number) {}
+    get kudoaBody(): string[] {
+        return ['endm'];
     }
 }
 
@@ -28,4 +46,4 @@ export class VToken implements CommonToken<Tokentype> {
     }
 }
 
-export type Token = MacroToken | MToken | VToken;
+export type Token = MacroToken | AsToken | EndmToken | MToken | VToken;

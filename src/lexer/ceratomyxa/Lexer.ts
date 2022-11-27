@@ -1,5 +1,5 @@
 import { Lexer as CommonLexer, LexerError } from '../common';
-import { MacroToken, MToken, VToken, Tokentype } from './Token';
+import { MacroToken, MToken, VToken, Tokentype, AsToken, EndmToken } from './Token';
 import { TokenStream } from './TokenStream';
 interface LexResult {
     result: number;
@@ -23,6 +23,10 @@ export class Lexer extends CommonLexer<TokenStream> {
         while ((result = cppLib.lex(lexer)).result != 0) {
             if (result.result == Tokentype.MACRO) {
                 stream.add(new MacroToken(result.row, result.col));
+            } else if (result.result == Tokentype.AS) {
+                stream.add(new AsToken(result.row, result.col));
+            } else if (result.result == Tokentype.ENDM) {
+                stream.add(new EndmToken(result.row, result.col));
             } else if (result.result == Tokentype.M) {
                 stream.add(new MToken(result.row, result.col, result.text));
             } else if (result.result == Tokentype.V) {
