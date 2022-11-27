@@ -4,7 +4,8 @@
             "name": "linux",
             "includePath": [
                 "${workspaceFolder}/node_modules/node-addon-api",
-                "~/.cache/node-gyp/18.12.1/include/node"
+                "~/.cache/node-gyp/18.12.1/include/node",
+                "~/.cache/node-gyp/16.18.1/include/node"
             ],
             "intelliSenseMode": "linux-clang-x64",
             "compilerPath": "/usr/bin/clang",

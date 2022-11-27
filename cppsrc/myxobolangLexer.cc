@@ -1,12 +1,11 @@
 #include <FlexLexer.h>
-#include "lexer.hh"
+#include "myxobolangLexer.hh"
 
-#include <napi.h>
 #include <fstream>
 
 using namespace Napi;
 
-External<Lexer> initLexer(const CallbackInfo &info)
+External<MyxobolangLexer> myxobolangLexer::initLexer(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() == 1)
@@ -18,31 +17,31 @@ External<Lexer> initLexer(const CallbackInfo &info)
         auto f = new std::ifstream(file);
         if (!f->is_open())
             Error::New(env, std::string("Cannot open file ") + file).ThrowAsJavaScriptException();
-        auto lexer = new Lexer(f);
-        return External<Lexer>::New(env, lexer);
+        auto lexer = new MyxobolangLexer(f);
+        return External<MyxobolangLexer>::New(env, lexer);
     }
 
-    auto lexer = new Lexer();
-    return External<Lexer>::New(env, lexer);
+    auto lexer = new MyxobolangLexer();
+    return External<MyxobolangLexer>::New(env, lexer);
 }
 
-void deleteLexer(const CallbackInfo &info)
+void myxobolangLexer::deleteLexer(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() < 1 || !info[0].IsExternal())
         TypeError::New(env, "Invalid parameter").ThrowAsJavaScriptException();
 
-    auto lexer = info[0].As<External<Lexer>>().Data();
+    auto lexer = info[0].As<External<MyxobolangLexer>>().Data();
     delete lexer;
 }
 
-Object lex(const CallbackInfo &info)
+Object myxobolangLexer::lex(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() < 1 || !info[0].IsExternal())
         TypeError::New(env, "Invalid parameter").ThrowAsJavaScriptException();
 
-    auto lexer = info[0].As<External<Lexer>>().Data();
+    auto lexer = info[0].As<External<MyxobolangLexer>>().Data();
     auto out = Object::New(env);
     auto result = lexer->yylex();
     auto leng = lexer->YYLeng();
@@ -57,12 +56,15 @@ Object lex(const CallbackInfo &info)
     return out;
 }
 
+void test() {
+    int a = 1;
+    a += 1;
+}
+
 Object init(Env env, Object exports)
 {
-    exports.Set("initLexer", Function::New(env, initLexer));
+    exports.Set("initLexer", Function::New(env, myxobolangLexer::initLexer));
     exports.Set("deleteLexer", Function::New(env, deleteLexer));
     exports.Set("lex", Function::New(env, lex));
     return exports;
 }
-
-NODE_API_MODULE(NODE_GYP_MODULE_NAME, init)

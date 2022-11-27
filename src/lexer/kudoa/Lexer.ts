@@ -27,7 +27,7 @@ interface CppLib {
     lex(lexer: External): LexResult;
 }
 
-const cppLib = require('../../../build/Release/lexer.node') as CppLib;
+const cppLib = (require('../../../build/Release/lexer.node') as any).kudoaLexer as CppLib;
 
 export class Lexer extends CommonLexer<TokenStream> {
     private lex(lexer: External, stream: TokenStream) {

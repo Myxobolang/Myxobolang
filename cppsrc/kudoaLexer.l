@@ -1,16 +1,11 @@
-%option noyywrap
-%option yyclass="Lexer"
-
 %{
-//#include <vector>
-//#include <string>
-#include "lexer.hh"
-#include <iostream>
-
-int row = 0;
-int col = 0;
-const char* currentText = nullptr;
+#include "kudoaLexer.hh"
 %}
+
+%option noyywrap
+%option c++
+%option yyclass="KudoaLexer"
+%option prefix="kl"
 
 TokenAsc [\x21-\x5a\x5e-\x7a\x7c\x7e]
 TokenSpecial (\\\{)|(\\\})|(\\\[)|(\\\])|(\\.)|(::)

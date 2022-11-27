@@ -4,8 +4,11 @@
         "cflags!": ["-fno-exceptions"],
         "cflags_cc!": ["-fno-exceptions"],
         "sources": [
-            "cppsrc/lexer.cc",
-            "cppbuild/lex.yy.cc"
+            "cppsrc/kudoaLexer.cc",
+            "cppbuild/kudoa.lex.yy.cc",
+            "cppsrc/myxobolangLexer.cc",
+            "cppbuild/myxobolang.lex.yy.cc",
+            "cppsrc/main.cc"
         ],
         "include_dirs": [
             "<!@(node -p \"require('node-addon-api').include\")",
@@ -16,11 +19,19 @@
             "<!(node -p \"require('node-addon-api').gyp\")"
         ],
         "defines": ["NAPI_DISABLE_CPP_EXCEPTIONS"],
-        "actions": [{
-            "action_name": "flex",
-            "inputs": ["cppsrc/lexer.l"],
-            "outputs": ["cppbuild/lex.yy.cc"],
-            "action": ["flex", "-+", "-o", "<@(_outputs)", "<@(_inputs)"]
-        }]
+        "actions": [
+            {
+                "action_name": "flex_kudoa",
+                "inputs": ["cppsrc/kudoaLexer.l"],
+                "outputs": ["cppbuild/kudoa.lex.yy.cc"],
+                "action": ["flex", "-+", "-o", "<@(_outputs)", "<@(_inputs)"]
+            },
+            {
+                "action_name": "flex_myxobolang",
+                "inputs": ["cppsrc/myxobolangLexer.l"],
+                "outputs": ["cppbuild/myxobolang.lex.yy.cc"],
+                "action": ["flex", "-+", "-o", "<@(_outputs)", "<@(_inputs)"]
+            }
+        ]
     }]
 }
