@@ -5,7 +5,7 @@
 %option noyywrap
 %option c++
 %option yyclass="MyxobolangLexer"
-%option prefix="ml"
+%option prefix="mx"
 
 NotEmpty [\x21-\x7e]
 

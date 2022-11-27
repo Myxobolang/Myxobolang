@@ -2,7 +2,7 @@
 #include "kudoaLexer.hh"
 
 #undef yyFlexLexer
-#define yyFlexLexer klFlexLexer
+#define yyFlexLexer kdFlexLexer
 
 #include <fstream>
 

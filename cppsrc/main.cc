@@ -1,6 +1,7 @@
 #include <FlexLexer.h>
 #include "kudoaLexer.hh"
 #include "myxobolangLexer.hh"
+#include "ceratomyxaLexer.hh"
 
 using namespace Napi;
 
@@ -13,6 +14,9 @@ Object initMain(Env env, Object exports)
     temp = Object::New(env);
     myxobolangLexer::init(env, temp);
     exports.Set("myxobolangLexer", temp);
+    temp = Object::New(env);
+    ceratomyxaLexer::init(env, temp);
+    exports.Set("ceratomyxaLexer", temp);
     return exports;
 }
 

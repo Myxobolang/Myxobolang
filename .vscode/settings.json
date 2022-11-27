@@ -3,5 +3,10 @@
         "new": "cpp",
         "fstream": "cpp"
     },
-    "cSpell.words": ["cflags"]
+    "cSpell.words": [
+        "cflags"
+    ],
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true
 }

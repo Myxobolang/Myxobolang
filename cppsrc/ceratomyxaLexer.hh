@@ -1,5 +1,5 @@
-#ifndef __MYXOBOLANG_LEXER_HH__
-#define __MYXOBOLANG_LEXER_HH__
+#ifndef __CERATOMYXA_LEXER_HH__
+#define __CERATOMYXA_LEXER_HH__
 
 #include <napi.h>
 
@@ -11,22 +11,22 @@ public:
 };
 #endif
 
-class MyxobolangLexer : public yyFlexLexer
+class CeratomyxaLexer : public yyFlexLexer
 {
 private:
     int row;
     int col;
 
 public:
-    MyxobolangLexer(std::istream *in = nullptr) : yyFlexLexer(in), row(0), col(0) {}
+    CeratomyxaLexer(std::istream *in = nullptr) : yyFlexLexer(in), row(0), col(0) {}
     int getRow() { return row; }
     int getCol() { return col; }
     int yylex();
 };
 
-namespace myxobolangLexer
+namespace ceratomyxaLexer
 {
-    Napi::External<MyxobolangLexer> initLexer(const Napi::CallbackInfo &info);
+    Napi::External<CeratomyxaLexer> initLexer(const Napi::CallbackInfo &info);
     void deleteLexer(const Napi::CallbackInfo &info);
     Napi::Object lex(const Napi::CallbackInfo &info);
     Napi::Object init(Napi::Env env, Napi::Object exports);

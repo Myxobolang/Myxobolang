@@ -8,7 +8,7 @@ class yyFlexLexer
 {
 public:
     yyFlexLexer(std::istream *in);
-}
+};
 #endif
 
 class KudoaLexer : public yyFlexLexer

@@ -5,7 +5,7 @@
 %option noyywrap
 %option c++
 %option yyclass="KudoaLexer"
-%option prefix="kl"
+%option prefix="kd"
 
 TokenAsc [\x21-\x5a\x5e-\x7a\x7c\x7e]
 TokenSpecial (\\\{)|(\\\})|(\\\[)|(\\\])|(\\.)|(::)

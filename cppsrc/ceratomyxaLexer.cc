@@ -1,14 +1,14 @@
 #include <FlexLexer.h>
-#include "myxobolangLexer.hh"
+#include "ceratomyxaLexer.hh"
 
 #undef yyFlexLexer
-#define yyFlexLexer mxFlexLexer
+#define yyFlexLexer crFlexLexer
 
 #include <fstream>
 
 using namespace Napi;
 
-External<MyxobolangLexer> myxobolangLexer::initLexer(const CallbackInfo &info)
+External<CeratomyxaLexer> ceratomyxaLexer::initLexer(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() == 1)
@@ -20,31 +20,31 @@ External<MyxobolangLexer> myxobolangLexer::initLexer(const CallbackInfo &info)
         auto f = new std::ifstream(file);
         if (!f->is_open())
             Error::New(env, std::string("Cannot open file ") + file).ThrowAsJavaScriptException();
-        auto lexer = new MyxobolangLexer(f);
-        return External<MyxobolangLexer>::New(env, lexer);
+        auto lexer = new CeratomyxaLexer(f);
+        return External<CeratomyxaLexer>::New(env, lexer);
     }
 
-    auto lexer = new MyxobolangLexer();
-    return External<MyxobolangLexer>::New(env, lexer);
+    auto lexer = new CeratomyxaLexer();
+    return External<CeratomyxaLexer>::New(env, lexer);
 }
 
-void myxobolangLexer::deleteLexer(const CallbackInfo &info)
+void ceratomyxaLexer::deleteLexer(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() < 1 || !info[0].IsExternal())
         TypeError::New(env, "Invalid parameter").ThrowAsJavaScriptException();
 
-    auto lexer = info[0].As<External<MyxobolangLexer>>().Data();
+    auto lexer = info[0].As<External<CeratomyxaLexer>>().Data();
     delete lexer;
 }
 
-Object myxobolangLexer::lex(const CallbackInfo &info)
+Object ceratomyxaLexer::lex(const CallbackInfo &info)
 {
     Env env = info.Env();
     if (info.Length() < 1 || !info[0].IsExternal())
         TypeError::New(env, "Invalid parameter").ThrowAsJavaScriptException();
 
-    auto lexer = info[0].As<External<MyxobolangLexer>>().Data();
+    auto lexer = info[0].As<External<CeratomyxaLexer>>().Data();
     auto out = Object::New(env);
     auto result = lexer->yylex();
     auto leng = lexer->YYLeng();
@@ -59,10 +59,10 @@ Object myxobolangLexer::lex(const CallbackInfo &info)
     return out;
 }
 
-Object myxobolangLexer::init(Env env, Object exports)
+Object ceratomyxaLexer::init(Env env, Object exports)
 {
-    exports.Set("initLexer", Function::New(env, myxobolangLexer::initLexer));
-    exports.Set("deleteLexer", Function::New(env, myxobolangLexer::deleteLexer));
-    exports.Set("lex", Function::New(env, myxobolangLexer::lex));
+    exports.Set("initLexer", Function::New(env, ceratomyxaLexer::initLexer));
+    exports.Set("deleteLexer", Function::New(env, ceratomyxaLexer::deleteLexer));
+    exports.Set("lex", Function::New(env, ceratomyxaLexer::lex));
     return exports;
 }

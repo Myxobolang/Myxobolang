@@ -6,7 +6,8 @@
     "gypfile": true,
     "scripts": {
         "build": "node-gyp rebuild && tsc --build",
-        "clean": "node-gyp clean && rimraf ./dist"
+        "clean": "node-gyp clean && rimraf ./dist",
+        "buildjs": "tsc --build"
     },
     "dependencies": {
         "node-addon-api": "^5.0.0"
