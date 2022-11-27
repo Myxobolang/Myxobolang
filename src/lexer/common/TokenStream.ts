@@ -40,6 +40,10 @@ export abstract class TokenStream<T extends Token = Token> {
         return out;
     }
 
+    toString() {
+        return this.toKudoa();
+    }
+
     private static genString(str: string) {
         if (/^(lang)|(row)|(token)$/.test(str) || str.charAt(0) == ':') {
             return `:${str}`;
