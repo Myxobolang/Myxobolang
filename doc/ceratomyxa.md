@@ -10,7 +10,7 @@ Ceratomyxa的标识符只能由Base64编码中可用的字符以及下划线（`
 
 ### 关键字
 
-Ceratomyxa只有一个关键字：`macro` 。
+Ceratomyxa只有三个关键字：`macro`，`as`和`endm`。
 
 ### 宏
 
