@@ -17,6 +17,10 @@ export abstract class TokenStream<T extends Token = Token> {
         return this.tokens[++this.index];
     }
 
+    prev() {
+        return this.tokens[--this.index];
+    }
+
     isEmpty() {
         return this.index >= this.tokens.length;
     }
