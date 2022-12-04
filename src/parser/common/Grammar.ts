@@ -1,4 +1,4 @@
-import type { TokenStream } from '../../lexer/myxobolang/TokenStream';
+import type { Token, TokenStream } from '../../lexer/common';
 import type { SyntaxNode } from './SyntaxNode';
 
 export class GrammarError extends Error {
@@ -34,9 +34,12 @@ export class SimpleGrammar<T extends number = number> extends Grammar<T> {
     }
 }
 
-export class CustomGrammar<T extends number = number> extends Grammar<T> {
+export class CustomGrammar<
+    T extends number = number,
+    R extends TokenStream<Token<T>> = TokenStream<Token<T>>
+> extends Grammar<T> {
     readonly type = GrammarType.CUSTOM;
-    constructor(name: T, readonly parse: (from: TokenStream) => SyntaxNode) {
+    constructor(name: T, readonly parse: (from: R) => SyntaxNode) {
         super(name);
     }
 }

@@ -3,7 +3,7 @@
         "new": "cpp",
         "fstream": "cpp"
     },
-    "cSpell.words": ["cflags", "Myxobolus"],
+    "cSpell.words": ["cflags", "froms", "leng", "Myxobolus"],
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.formatOnType": true

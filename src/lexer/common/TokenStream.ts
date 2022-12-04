@@ -3,6 +3,7 @@ import type { Token } from './Token';
 export abstract class TokenStream<T extends Token = Token> {
     private tokens: T[] = [];
     private index = 0;
+    private stack: number[] = [];
     protected abstract language: string;
 
     get(index: number) {
@@ -19,6 +20,18 @@ export abstract class TokenStream<T extends Token = Token> {
 
     prev() {
         return this.tokens[--this.index];
+    }
+
+    push() {
+        this.stack.push(this.index);
+    }
+
+    pop() {
+        const temp = this.stack.pop();
+        if (temp == null) {
+            throw new Error('Nothing to pop');
+        }
+        this.index = temp;
     }
 
     isEmpty() {
@@ -50,7 +63,7 @@ export abstract class TokenStream<T extends Token = Token> {
 
     private static genString(str: string) {
         if (/^(lang)|(row)|(token)$/.test(str) || str.charAt(0) == ':') {
-            return `:${str}`;
+            str = `:${str}`;
         }
         return str
             .replace(/\\/g, '\\\\')

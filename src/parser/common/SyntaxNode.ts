@@ -6,3 +6,7 @@ export interface SyntaxNode<T extends number = number, U extends Token<T> = Toke
     children: SyntaxNode[];
     get dicaudaBody(): string[];
 }
+
+export interface SyntaxNodeConstructor<T extends number = number, U extends Token<T> = Token<T>> {
+    new (...args: (Token<T> | SyntaxNode<T, U>)[]): SyntaxNode<T, U>;
+}

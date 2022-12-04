@@ -1,5 +1,5 @@
 import type { Token as CommonToken } from '../common';
-export enum Tokentype {
+export enum TokenType {
     MACRO = 1,
     AS,
     ENDM,
@@ -7,40 +7,55 @@ export enum Tokentype {
     V,
 }
 
-export class MacroToken implements CommonToken<Tokentype> {
-    type = Tokentype.MACRO;
+export class MacroToken implements CommonToken<TokenType> {
+    type = TokenType.MACRO;
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return 'macro';
+    }
     get kudoaBody(): string[] {
         return ['macro'];
     }
 }
 
-export class AsToken implements CommonToken<Tokentype> {
-    type = Tokentype.AS;
+export class AsToken implements CommonToken<TokenType> {
+    type = TokenType.AS;
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return 'as';
+    }
     get kudoaBody(): string[] {
         return ['as'];
     }
 }
 
-export class EndmToken implements CommonToken<Tokentype> {
-    type = Tokentype.MACRO;
+export class EndmToken implements CommonToken<TokenType> {
+    type = TokenType.MACRO;
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return 'endm';
+    }
     get kudoaBody(): string[] {
         return ['endm'];
     }
 }
 
-export class MToken implements CommonToken<Tokentype> {
-    type = Tokentype.M;
+export class MToken implements CommonToken<TokenType> {
+    type = TokenType.M;
     constructor(public row: number, public col: number, public value: string) {}
+    get raw(): string {
+        return this.value;
+    }
     get kudoaBody(): string[] {
         return ['m', this.value];
     }
 }
-export class VToken implements CommonToken<Tokentype> {
-    type = Tokentype.V;
+export class VToken implements CommonToken<TokenType> {
+    type = TokenType.V;
     constructor(public row: number, public col: number, public value: string) {}
+    get raw(): string {
+        return this.value;
+    }
     get kudoaBody(): string[] {
         return ['v', this.value];
     }

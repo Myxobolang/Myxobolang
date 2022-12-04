@@ -1,5 +1,5 @@
 import { Lexer as CommonLexer, LexerError } from '../common';
-import { MOUZToken, Tokentype, VARToken } from './Token';
+import { MOUZToken, TokenType, VARToken } from './Token';
 import { TokenStream } from './TokenStream';
 interface LexResult {
     result: number;
@@ -21,7 +21,7 @@ export class Lexer extends CommonLexer<TokenStream> {
     private lex(lexer: External, stream: TokenStream) {
         let result: LexResult;
         while ((result = cppLib.lex(lexer)).result != 0) {
-            if (result.result == Tokentype.MOUZ) {
+            if (result.result == TokenType.MOUZ) {
                 stream.add(new MOUZToken(result.row, result.col));
             } else {
                 stream.add(new VARToken(result.row, result.col, result.text));

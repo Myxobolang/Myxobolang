@@ -3,4 +3,5 @@ export interface Token<T extends number = number> {
     row: number;
     col: number;
     get kudoaBody(): string[];
+    get raw(): string;
 }

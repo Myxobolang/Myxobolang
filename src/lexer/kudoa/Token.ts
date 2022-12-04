@@ -13,6 +13,9 @@ export enum TokenType {
 
 export class LSBRToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return '{';
+    }
     get kudoaBody(): string[] {
         return ['lsbr'];
     }
@@ -21,6 +24,9 @@ export class LSBRToken implements CommonToken<TokenType> {
 
 export class RSBRToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return '}';
+    }
     get kudoaBody(): string[] {
         return ['rsbr'];
     }
@@ -29,6 +35,9 @@ export class RSBRToken implements CommonToken<TokenType> {
 
 export class LCBRToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return '[';
+    }
     get kudoaBody(): string[] {
         return ['lcbr'];
     }
@@ -37,6 +46,9 @@ export class LCBRToken implements CommonToken<TokenType> {
 
 export class RCBRToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return ']';
+    }
     get kudoaBody(): string[] {
         return ['rcbr'];
     }
@@ -45,6 +57,9 @@ export class RCBRToken implements CommonToken<TokenType> {
 
 export class LangToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return 'lang';
+    }
     get kudoaBody(): string[] {
         return ['lang'];
     }
@@ -53,6 +68,9 @@ export class LangToken implements CommonToken<TokenType> {
 
 export class RowToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return 'row';
+    }
     get kudoaBody(): string[] {
         return ['row'];
     }
@@ -61,6 +79,9 @@ export class RowToken implements CommonToken<TokenType> {
 
 export class TokenToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number) {}
+    get raw(): string {
+        return 'token';
+    }
     get kudoaBody(): string[] {
         return ['token'];
     }
@@ -69,6 +90,9 @@ export class TokenToken implements CommonToken<TokenType> {
 
 export class StrToken implements CommonToken<TokenType> {
     constructor(public row: number, public col: number, public value: string) {}
+    get raw(): string {
+        return this.value;
+    }
     get kudoaBody(): string[] {
         return ['str', this.value];
     }
