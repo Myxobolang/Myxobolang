@@ -1,12 +1,16 @@
 import type { Token } from '../../lexer/common';
 
-export interface SyntaxNode<T extends number = number, U extends Token<T> = Token<T>> {
-    type: T;
-    origin: U;
+export interface SyntaxNode<N extends number = number, T extends number = number, O extends Token<T> = Token<T>> {
+    type: N;
+    origin: O;
     children: SyntaxNode[];
     get dicaudaBody(): string[];
 }
 
-export interface SyntaxNodeConstructor<T extends number = number, U extends Token<T> = Token<T>> {
-    new (...args: (Token<T> | SyntaxNode<T, U>)[]): SyntaxNode<T, U>;
+export interface SyntaxNodeConstructor<
+    N extends number = number,
+    T extends number = number,
+    O extends Token<T> = Token<T>
+> {
+    new (...args: (O | SyntaxNode<N, T, O>)[]): SyntaxNode<N, T, O>;
 }

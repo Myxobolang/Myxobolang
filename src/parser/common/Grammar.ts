@@ -12,9 +12,9 @@ export enum GrammarType {
     CUSTOM,
 }
 
-export abstract class Grammar<T extends number = number> {
+export abstract class Grammar<G extends number = number> {
     abstract readonly type: GrammarType;
-    constructor(readonly name: T) {}
+    constructor(readonly name: G) {}
 }
 
 export enum NameType {
@@ -22,26 +22,42 @@ export enum NameType {
     GRAMMAR,
 }
 
-export interface Name {
-    type: NameType;
-    value: number;
+interface TokenName<T extends number = number> {
+    type: NameType.TOKEN;
+    value: T;
 }
 
-export class SimpleGrammar<T extends number = number> extends Grammar<T> {
+interface GrammarName<G extends number = number> {
+    type: NameType.GRAMMAR;
+    value: G;
+}
+
+export type Name<G extends number = number, T extends number = number> = TokenName<T> | GrammarName<G>;
+
+export class SimpleGrammar<G extends number = number, T extends number = number> extends Grammar<G> {
     readonly type = GrammarType.SIMPLE;
-    constructor(name: T, readonly to: Name[]) {
+    constructor(name: G, readonly to: Name<G, T>[]) {
         super(name);
     }
 }
 
 export class CustomGrammar<
+    G extends number = number,
+    N extends number = number,
     T extends number = number,
-    R extends TokenStream<Token<T>> = TokenStream<Token<T>>
-> extends Grammar<T> {
+    O extends Token<T> = Token<T>,
+    S extends TokenStream<O> = TokenStream<O>
+> extends Grammar<G> {
     readonly type = GrammarType.CUSTOM;
-    constructor(name: T, readonly parse: (from: R) => SyntaxNode) {
+    constructor(name: G, readonly parse: (from: S) => SyntaxNode<N, T, O>) {
         super(name);
     }
 }
 
-export type AllGrammar<T extends number = number> = SimpleGrammar<T> | CustomGrammar<T>;
+export type AllGrammar<
+    G extends number = number,
+    N extends number = number,
+    T extends number = number,
+    O extends Token<T> = Token<T>,
+    S extends TokenStream<O> = TokenStream<O>
+> = SimpleGrammar<G, T> | CustomGrammar<G, N, T, O, S>;
