@@ -2,6 +2,7 @@ import type { Token, TokenStream } from '../../lexer/common';
 import { AllGrammar, CustomGrammar, GrammarType, NameType, SimpleGrammar } from './Grammar';
 import { ParserError } from './ParserError';
 import type { SyntaxNode, SyntaxNodeConstructor } from './SyntaxNode';
+import type { SyntaxTree, SyntaxTreeConstructor } from './SyntaxTree';
 
 class SimpleSymbol<G extends number, N extends number, T extends number, O extends Token<T>, S extends TokenStream<O>> {
     constructor(readonly name: G) {}
@@ -38,12 +39,13 @@ class PlaceholderNode<N extends number = number, T extends number = number, O ex
     }
 }
 
-export class Parser<
+export abstract class Parser<
     G extends number = number,
     N extends number = number,
     T extends number = number,
     O extends Token<T> = Token<T>,
-    S extends TokenStream<O> = TokenStream<O>
+    S extends TokenStream<O> = TokenStream<O>,
+    R extends SyntaxTree<N, T, O> = SyntaxTree<N, T, O>
 > {
     private finished = false;
     private grammars: AllGrammar<G, N, T, O, S>[] = [];
@@ -54,6 +56,8 @@ export class Parser<
     private simples = new Map<G, SimpleSymbol<G, N, T, O, S>>();
     private customs = new Map<G, CustomSymbol<G, N, T, O, S>>();
     private tokens = new Map<T, TokenSymbol<T>>();
+
+    protected constructor(private tree: SyntaxTreeConstructor<N, T, O>) {}
 
     protected register(grammar: SimpleGrammar<G, T>, node: SyntaxNodeConstructor<N, T, O>): void;
     protected register(grammar: CustomGrammar<G, N, T, O, S>): void;
@@ -183,5 +187,13 @@ export class Parser<
             }
             throw err;
         }
+    }
+
+    parse(stream: S) {
+        if (!this.finished) {
+            throw new Error('Method finish not used in constructor');
+        }
+
+        return new this.tree(this.parseFrom(this.rootSymbol, stream));
     }
 }

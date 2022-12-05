@@ -3,7 +3,7 @@ import type { Token } from '../../lexer/common';
 export interface SyntaxNode<N extends number = number, T extends number = number, O extends Token<T> = Token<T>> {
     type: N;
     origin: O;
-    children: SyntaxNode[];
+    children: SyntaxNode<N, T, O>[];
     get dicaudaBody(): string[];
 }
 

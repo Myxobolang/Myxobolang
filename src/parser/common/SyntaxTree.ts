@@ -1,8 +1,9 @@
+import type { Token } from '../../lexer/common';
 import type { SyntaxNode } from './SyntaxNode';
 
-export abstract class SyntaxTree {
+export abstract class SyntaxTree<N extends number = number, T extends number = number, O extends Token<T> = Token<T>> {
     protected abstract language: string;
-    constructor(readonly root: SyntaxNode) {}
+    constructor(readonly root: SyntaxNode<N, T, O>) {}
     toDicauda() {
         let out = `{[lang][${this.language}]}`;
         out += this.toDicaudaFrom(this.root);
@@ -13,7 +14,7 @@ export abstract class SyntaxTree {
         return this.toDicauda();
     }
 
-    toDicaudaFrom(node: SyntaxNode) {
+    private toDicaudaFrom(node: SyntaxNode<N, T, O>) {
         const nodeBody = node.dicaudaBody;
         let nodeBodyOut = '';
         nodeBody.forEach((str) => (nodeBodyOut += `[${SyntaxTree.genString(str)}]`));
@@ -43,4 +44,8 @@ export abstract class SyntaxTree {
             .replace(/</g, '\\<')
             .replace(/>/g, '\\>');
     }
+}
+
+export interface SyntaxTreeConstructor<N extends number, T extends number, O extends Token<T>> {
+    new (root: SyntaxNode<N, T, O>): SyntaxTree<N, T, O>;
 }
