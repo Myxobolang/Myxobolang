@@ -4,70 +4,84 @@ import { ParserError } from './ParserError';
 import type { SyntaxNode, SyntaxNodeConstructor } from './SyntaxNode';
 import type { SyntaxTree, SyntaxTreeConstructor } from './SyntaxTree';
 
-class SimpleSymbol<G extends number, N extends number, T extends number, O extends Token<T>, S extends TokenStream<O>> {
+class SimpleSymbol<
+    D extends SyntaxNode<D, N, T, O>,
+    G extends number,
+    N extends number,
+    T extends number,
+    O extends Token<T>,
+    S extends TokenStream<O>
+> {
     constructor(readonly name: G) {}
-    readonly rules: Rule<G, N, T, O, S>[] = [];
+    readonly rules: Rule<D, G, N, T, O, S>[] = [];
 }
 
-class CustomSymbol<G extends number, N extends number, T extends number, O extends Token<T>, S extends TokenStream<O>> {
-    constructor(readonly name: G, readonly origin: CustomGrammar<G, N, T, O, S>) {}
+class CustomSymbol<
+    D extends SyntaxNode<D, N, T, O>,
+    G extends number,
+    N extends number,
+    T extends number,
+    O extends Token<T>,
+    S extends TokenStream<O>
+> {
+    constructor(readonly name: G, readonly origin: CustomGrammar<D, G, N, T, O, S>) {}
 }
 
 class TokenSymbol<T extends number> {
     constructor(readonly name: T) {}
 }
 
-type Symbol<G extends number, N extends number, T extends number, O extends Token<T>, S extends TokenStream<O>> =
-    | SimpleSymbol<G, N, T, O, S>
-    | CustomSymbol<G, N, T, O, S>
-    | TokenSymbol<T>;
+type Symbol<
+    D extends SyntaxNode<D, N, T, O>,
+    G extends number,
+    N extends number,
+    T extends number,
+    O extends Token<T>,
+    S extends TokenStream<O>
+> = SimpleSymbol<D, G, N, T, O, S> | CustomSymbol<D, G, N, T, O, S> | TokenSymbol<T>;
 
-class Rule<G extends number, N extends number, T extends number, O extends Token<T>, S extends TokenStream<O>> {
-    constructor(readonly node: SyntaxNodeConstructor<N, T, O>) {}
-    to: Symbol<G, N, T, O, S>[] = [];
-}
-
-class PlaceholderNode<N extends number = number, T extends number = number, O extends Token<T> = Token<T>>
-    implements SyntaxNode<N, T, O>
-{
-    constructor(...args: (O | SyntaxNode<N, T, O>)[]) {}
-    type!: N;
-    origin!: O;
-    children = [];
-    get dicaudaBody(): string[] {
-        throw new Error('Method not implemented.');
-    }
+class Rule<
+    D extends SyntaxNode<D, N, T, O>,
+    G extends number,
+    N extends number,
+    T extends number,
+    O extends Token<T>,
+    S extends TokenStream<O>
+> {
+    constructor(readonly node: SyntaxNodeConstructor<D, N, T, O>) {}
+    to: Symbol<D, G, N, T, O, S>[] = [];
 }
 
 export abstract class Parser<
+    D extends SyntaxNode<D, N, T, O>,
     G extends number = number,
     N extends number = number,
     T extends number = number,
     O extends Token<T> = Token<T>,
     S extends TokenStream<O> = TokenStream<O>,
-    R extends SyntaxTree<N, T, O> = SyntaxTree<N, T, O>
+    R extends SyntaxTree<D, N, T, O> = SyntaxTree<D, N, T, O>
 > {
     private finished = false;
-    private grammars: AllGrammar<G, N, T, O, S>[] = [];
+    private grammars: AllGrammar<D, G, N, T, O, S>[] = [];
     private rootGrammar!: G;
-    private tokenNode!: SyntaxNodeConstructor<N, T, O>;
-    private nodes: SyntaxNodeConstructor<N, T, O>[] = [];
-    private rootSymbol = null as unknown as Symbol<G, N, T, O, S>;
-    private simples = new Map<G, SimpleSymbol<G, N, T, O, S>>();
-    private customs = new Map<G, CustomSymbol<G, N, T, O, S>>();
+    private tokenNode!: SyntaxNodeConstructor<D, N, T, O>;
+    private nodes: (SyntaxNodeConstructor<D, N, T, O> | null)[] = [];
+    private rootSymbol = null as unknown as Symbol<D, G, N, T, O, S>;
+    private simples = new Map<G, SimpleSymbol<D, G, N, T, O, S>>();
+    private customs = new Map<G, CustomSymbol<D, G, N, T, O, S>>();
     private tokens = new Map<T, TokenSymbol<T>>();
 
-    protected constructor(private tree: SyntaxTreeConstructor<N, T, O>) {}
+    protected constructor(private tree: SyntaxTreeConstructor<D, N, T, O, R>) {}
 
-    protected register(grammar: SimpleGrammar<G, T>, node: SyntaxNodeConstructor<N, T, O>): void;
-    protected register(grammar: CustomGrammar<G, N, T, O, S>): void;
+    protected register(grammar: SimpleGrammar<G, T>, node: SyntaxNodeConstructor<D, N, T, O>): void;
+    protected register(grammar: CustomGrammar<D, G, N, T, O, S>): void;
 
-    protected register(grammar: AllGrammar<G, N, T, O, S>, node?: SyntaxNodeConstructor<N, T, O>) {
+    protected register(grammar: AllGrammar<D, G, N, T, O, S>, node?: SyntaxNodeConstructor<D, N, T, O>) {
         this.grammars.push(grammar);
         if (node != null) {
             this.nodes.push(node);
         } else {
-            this.nodes.push(PlaceholderNode<N, T, O>);
+            this.nodes.push(null);
         }
         if (grammar.type == GrammarType.SIMPLE) {
             grammar.to.forEach((name) => {
@@ -78,7 +92,7 @@ export abstract class Parser<
         }
     }
 
-    protected finish(rootGrammar: G, tokenNode: SyntaxNodeConstructor<N, T, O>) {
+    protected finish(rootGrammar: G, tokenNode: SyntaxNodeConstructor<D, N, T, O>) {
         this.finished = true;
         this.rootGrammar = rootGrammar;
         this.tokenNode = tokenNode;
@@ -89,23 +103,23 @@ export abstract class Parser<
         this.createSymbols();
         this.createRules();
 
-        this.rootSymbol = this.simples.get(this.rootGrammar as G) as Symbol<G, N, T, O, S>;
+        this.rootSymbol = this.simples.get(this.rootGrammar as G) as Symbol<D, G, N, T, O, S>;
         if (this.rootSymbol == null) {
-            this.rootSymbol = this.customs.get(this.rootGrammar as G) as Symbol<G, N, T, O, S>;
+            this.rootSymbol = this.customs.get(this.rootGrammar as G) as Symbol<D, G, N, T, O, S>;
         }
     }
 
     private createSymbols() {
         this.grammars.forEach((grammar) => {
             if (grammar.type == GrammarType.SIMPLE && !this.simples.has(grammar.name)) {
-                const temp = new SimpleSymbol<G, N, T, O, S>(grammar.name);
+                const temp = new SimpleSymbol<D, G, N, T, O, S>(grammar.name);
                 this.simples.set(grammar.name, temp);
                 if (grammar.name == this.rootGrammar) {
                     this.rootSymbol = temp;
                 }
             }
             if (grammar.type == GrammarType.CUSTOM && !this.customs.has(grammar.name)) {
-                const temp = new CustomSymbol<G, N, T, O, S>(grammar.name, grammar);
+                const temp = new CustomSymbol<D, G, N, T, O, S>(grammar.name, grammar);
                 this.customs.set(grammar.name, temp);
                 if (grammar.name == this.rootGrammar) {
                     this.rootSymbol = temp;
@@ -117,9 +131,9 @@ export abstract class Parser<
     private createRules() {
         this.grammars.forEach((grammar, index) => {
             if (grammar.type == GrammarType.SIMPLE) {
-                const rule = new Rule<G, N, T, O, S>(this.nodes[index]);
+                const rule = new Rule<D, G, N, T, O, S>(this.nodes[index] as SyntaxNodeConstructor<D, N, T, O>);
                 grammar.to.forEach((name) => {
-                    let _to: Symbol<G, N, T, O, S> | undefined;
+                    let _to: Symbol<D, G, N, T, O, S> | undefined;
                     if (name.type == NameType.GRAMMAR) {
                         if ((_to = this.simples.get(name.value)) == null) {
                             _to = this.customs.get(name.value);
@@ -127,10 +141,10 @@ export abstract class Parser<
                     } else {
                         _to = this.tokens.get(name.value);
                     }
-                    const to = _to as Symbol<G, N, T, O, S>;
+                    const to = _to as Symbol<D, G, N, T, O, S>;
                     rule.to.push(to);
                 });
-                const symbol = this.simples.get(grammar.name) as SimpleSymbol<G, N, T, O, S>;
+                const symbol = this.simples.get(grammar.name) as SimpleSymbol<D, G, N, T, O, S>;
                 symbol.rules.push(rule);
             }
         });
@@ -143,7 +157,7 @@ export abstract class Parser<
         return stream.next();
     }
 
-    private parseFrom(symbol: Symbol<G, N, T, O, S>, stream: S) {
+    private parseFrom(symbol: Symbol<D, G, N, T, O, S>, stream: S): D {
         if (symbol instanceof TokenSymbol) {
             stream.push();
             const token = this.checkNext(stream);
@@ -170,7 +184,7 @@ export abstract class Parser<
             symbol.rules.forEach((rule) => {
                 stream.push();
                 try {
-                    const nodes: SyntaxNode<N, T, O>[] = [];
+                    const nodes: D[] = [];
                     rule.to.forEach((to) => {
                         nodes.push(this.parseFrom(to, stream));
                     });
