@@ -159,19 +159,19 @@ export abstract class Parser<
 
     private parseFrom(symbol: Symbol<D, G, N, T, O, S>, stream: S): D {
         if (symbol instanceof TokenSymbol) {
-            stream.push();
+            const strId = stream.push();
             const token = this.checkNext(stream);
             if (token.type == symbol.name) {
                 return new this.tokenNode(token);
             }
-            stream.pop();
+            stream.pop(strId);
             throw new ParserError(token);
         } else if (symbol instanceof CustomSymbol) {
+            const strId = stream.push();
             try {
-                stream.push();
                 return symbol.origin.parse(stream);
             } catch (e) {
-                stream.pop();
+                stream.pop(strId);
                 if (e instanceof ParserError) {
                     throw e;
                 } else if (e instanceof Error) {
@@ -181,8 +181,9 @@ export abstract class Parser<
             }
         } else {
             let err: any;
-            symbol.rules.forEach((rule) => {
-                stream.push();
+            for (let i = 0; i < symbol.rules.length; i++) {
+                const rule = symbol.rules[i];
+                const strId = stream.push();
                 try {
                     const nodes: D[] = [];
                     rule.to.forEach((to) => {
@@ -191,9 +192,9 @@ export abstract class Parser<
                     return new rule.node(...nodes);
                 } catch (e) {
                     err = e;
-                    stream.pop();
+                    stream.pop(strId);
                 }
-            });
+            }
             if (err instanceof ParserError) {
                 throw err;
             } else if (err instanceof Error) {

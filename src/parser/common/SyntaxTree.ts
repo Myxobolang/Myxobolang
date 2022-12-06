@@ -22,7 +22,7 @@ export abstract class SyntaxTree<
     private toDicaudaFrom(node: D) {
         const nodeBody = node.dicaudaBody;
         let nodeBodyOut = '';
-        nodeBody.forEach((str) => (nodeBodyOut += `[${SyntaxTree.genString(str)}]`));
+        nodeBody.forEach((str) => (nodeBodyOut += `(${SyntaxTree.genString(str)})`));
         let out = `<(node)(${node.children.length})(${nodeBody.length})${nodeBodyOut}>`;
         const origin = node.origin;
         const originBody = origin.kudoaBody;
@@ -34,7 +34,7 @@ export abstract class SyntaxTree<
     }
 
     private static genString(str: string) {
-        if (/^(lang)|(row)|(token)|(node)$/.test(str) || str.charAt(0) == ':') {
+        if (/^((lang)|(row)|(token)|(node))$/.test(str) || str.charAt(0) == ':') {
             str = `:${str}`;
         }
         return str

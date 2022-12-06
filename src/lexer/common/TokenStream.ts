@@ -15,23 +15,22 @@ export abstract class TokenStream<T extends Token = Token> {
     }
 
     next() {
-        return this.tokens[++this.index];
+        return this.tokens[this.index++];
     }
 
     prev() {
-        return this.tokens[--this.index];
+        return this.tokens[this.index++];
     }
 
     push() {
+        const out = this.stack.length;
         this.stack.push(this.index);
+        return out;
     }
 
-    pop() {
-        const temp = this.stack.pop();
-        if (temp == null) {
-            throw new Error('Nothing to pop');
-        }
-        this.index = temp;
+    pop(index: number) {
+        this.index = this.stack[index];
+        this.stack = this.stack.slice(0, index);
     }
 
     isEmpty() {
@@ -62,7 +61,7 @@ export abstract class TokenStream<T extends Token = Token> {
     }
 
     private static genString(str: string) {
-        if (/^(lang)|(row)|(token)$/.test(str) || str.charAt(0) == ':') {
+        if (/^((lang)|(row)|(token))$/.test(str) || str.charAt(0) == ':') {
             str = `:${str}`;
         }
         return str

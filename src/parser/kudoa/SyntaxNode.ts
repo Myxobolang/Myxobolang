@@ -32,7 +32,7 @@ export class KudoaNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['kudoa'];
     }
 }
 
@@ -47,7 +47,7 @@ export class LangNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['lang'];
     }
 }
 
@@ -63,7 +63,7 @@ export class RowsNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['rows'];
     }
 }
 
@@ -88,7 +88,7 @@ export class RowNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['row'];
     }
 }
 
@@ -104,7 +104,7 @@ export class TokensNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['tokens'];
     }
 }
 
@@ -129,7 +129,7 @@ export class TokenNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['token'];
     }
 }
 
@@ -145,7 +145,7 @@ export class TokenBodiesNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['tokenBodies'];
     }
 }
 
@@ -160,7 +160,7 @@ export class TokenBodyNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['tokenBody'];
     }
 }
 
@@ -172,7 +172,7 @@ export class BaseTokenNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return [];
+        return ['baseToken'];
     }
 }
 
