@@ -11,7 +11,9 @@
             "cppsrc/main.cc",
             "cppbuild/useless.lex.yy.cc",
             "cppsrc/ceratomyxaLexer.cc",
-            "cppbuild/ceratomyxa.lex.yy.cc"
+            "cppbuild/ceratomyxa.lex.yy.cc",
+            "cppsrc/dicaudaLexer.cc",
+            "cppbuild/dicauda.lex.yy.cc"
         ],
         "include_dirs": [
             "<!@(node -p \"require('node-addon-api').include\")",
@@ -45,6 +47,12 @@
                 "action_name": "flex_ceratomyxa",
                 "inputs": ["cppsrc/ceratomyxaLexer.l"],
                 "outputs": ["cppbuild/ceratomyxa.lex.yy.cc"],
+                "action": ["flex", "-+", "-o", "<@(_outputs)", "<@(_inputs)"]
+            },
+            {
+                "action_name": "flex_dicauda",
+                "inputs": ["cppsrc/dicaudaLexer.l"],
+                "outputs": ["cppbuild/dicauda.lex.yy.cc"],
                 "action": ["flex", "-+", "-o", "<@(_outputs)", "<@(_inputs)"]
             }
         ]

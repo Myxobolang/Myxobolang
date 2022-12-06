@@ -1,0 +1,76 @@
+import type { Token, TokenType } from '../../lexer/myxobolang';
+import type { SyntaxNode } from '../common';
+
+export enum NodeType {
+    MYXOBOLANG,
+    TOKENS,
+    NAMESPACE,
+    TOKEN,
+}
+
+type BaseNode = SyntaxNode<Node, NodeType, TokenType, Token>;
+
+export class MyxobolangNode implements BaseNode {
+    type = NodeType.MYXOBOLANG;
+    constructor(...args: (Token | Node)[]) {
+        this.origin = (args[0] as Node).origin;
+        this.children.push(...this.flatTokens(args[0] as TokensNode));
+    }
+    private flatTokens(node: TokensNode): Node[] {
+        if (node.children.length == 1) {
+            return [node.children[0]];
+        } else {
+            return [node.children[0], ...this.flatTokens(node.children[1])];
+        }
+    }
+    origin: Token;
+    children: Node[] = [];
+    get dicaudaBody(): string[] {
+        return ['myxobolang'];
+    }
+}
+
+export class TokensNode implements BaseNode {
+    type = NodeType.TOKENS;
+    constructor(...args: (Token | Node)[]) {
+        this.origin = (args[0] as Node).origin;
+        this.children.push(args[0] as Node);
+        if (args.length == 2) {
+            this.children.push(args[1] as Node);
+        }
+    }
+    origin: Token;
+    children: Node[] = [];
+    get dicaudaBody(): string[] {
+        return ['tokens'];
+    }
+}
+
+export class NamespaceNode implements BaseNode {
+    type = NodeType.NAMESPACE;
+    constructor(...args: (Token | Node)[]) {
+        this.origin = (args[0] as TokenNode).origin;
+        for (let i = 0; i < 4; i++) {
+            this.children.push(args[i] as TokenNode);
+        }
+    }
+    origin: Token;
+    children: Node[] = [];
+    get dicaudaBody(): string[] {
+        return ['namespace'];
+    }
+}
+
+export class TokenNode implements BaseNode {
+    type = NodeType.TOKEN;
+    constructor(...args: (Token | Node)[]) {
+        this.origin = args[0] as Token;
+    }
+    origin: Token;
+    children: Node[] = [];
+    get dicaudaBody(): string[] {
+        return ['token'];
+    }
+}
+
+export type Node = MyxobolangNode | TokensNode | NamespaceNode | TokenNode;

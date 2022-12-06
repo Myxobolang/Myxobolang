@@ -2,6 +2,7 @@
 #include "kudoaLexer.hh"
 #include "myxobolangLexer.hh"
 #include "ceratomyxaLexer.hh"
+#include "dicaudaLexer.hh"
 
 using namespace Napi;
 
@@ -17,6 +18,9 @@ Object initMain(Env env, Object exports)
     temp = Object::New(env);
     ceratomyxaLexer::init(env, temp);
     exports.Set("ceratomyxaLexer", temp);
+    temp = Object::New(env);
+    dicaudaLexer::init(env, temp);
+    exports.Set("dicaudaLexer", temp);
     return exports;
 }
 
