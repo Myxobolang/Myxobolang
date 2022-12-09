@@ -1,3 +1,3 @@
 export { Lexer } from './Lexer';
-export { Token } from './Token';
+export { TokenType, Token } from './Token';
 export { TokenStream } from './TokenStream';
