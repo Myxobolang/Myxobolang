@@ -8,7 +8,7 @@ export enum TokenType {
 }
 
 export class MacroToken implements CommonToken<TokenType> {
-    type = TokenType.MACRO;
+    type: TokenType.MACRO = TokenType.MACRO;
     constructor(public row: number, public col: number) {}
     get raw(): string {
         return 'macro';
@@ -19,7 +19,7 @@ export class MacroToken implements CommonToken<TokenType> {
 }
 
 export class AsToken implements CommonToken<TokenType> {
-    type = TokenType.AS;
+    type: TokenType.AS = TokenType.AS;
     constructor(public row: number, public col: number) {}
     get raw(): string {
         return 'as';
@@ -30,7 +30,7 @@ export class AsToken implements CommonToken<TokenType> {
 }
 
 export class EndmToken implements CommonToken<TokenType> {
-    type = TokenType.MACRO;
+    type: TokenType.ENDM = TokenType.ENDM;
     constructor(public row: number, public col: number) {}
     get raw(): string {
         return 'endm';
@@ -41,7 +41,7 @@ export class EndmToken implements CommonToken<TokenType> {
 }
 
 export class MToken implements CommonToken<TokenType> {
-    type = TokenType.M;
+    type: TokenType.M = TokenType.M;
     constructor(public row: number, public col: number, public value: string) {}
     get raw(): string {
         return this.value;
@@ -51,7 +51,7 @@ export class MToken implements CommonToken<TokenType> {
     }
 }
 export class VToken implements CommonToken<TokenType> {
-    type = TokenType.V;
+    type: TokenType.V = TokenType.V;
     constructor(public row: number, public col: number, public value: string) {}
     get raw(): string {
         return this.value;

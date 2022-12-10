@@ -24,7 +24,7 @@ export class LSBRToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['lsbr'];
     }
-    type = TokenType.LSBR;
+    type: TokenType.LSBR = TokenType.LSBR;
 }
 
 export class RSBRToken implements CommonToken<TokenType> {
@@ -35,7 +35,7 @@ export class RSBRToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['rsbr'];
     }
-    type = TokenType.RSBR;
+    type: TokenType.RSBR = TokenType.RSBR;
 }
 
 export class LCBRToken implements CommonToken<TokenType> {
@@ -46,7 +46,7 @@ export class LCBRToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['lcbr'];
     }
-    type = TokenType.LCBR;
+    type: TokenType.LCBR = TokenType.LCBR;
 }
 
 export class RCBRToken implements CommonToken<TokenType> {
@@ -57,7 +57,7 @@ export class RCBRToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['rcbr'];
     }
-    type = TokenType.RCBR;
+    type: TokenType.RCBR = TokenType.RCBR;
 }
 
 export class LToken implements CommonToken<TokenType> {
@@ -68,7 +68,7 @@ export class LToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['l'];
     }
-    type = TokenType.L;
+    type: TokenType.L = TokenType.L;
 }
 
 export class GToken implements CommonToken<TokenType> {
@@ -79,7 +79,7 @@ export class GToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['g'];
     }
-    type = TokenType.G;
+    type: TokenType.G = TokenType.G;
 }
 
 export class LBRToken implements CommonToken<TokenType> {
@@ -90,7 +90,7 @@ export class LBRToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['lbr'];
     }
-    type = TokenType.LBR;
+    type: TokenType.LBR = TokenType.LBR;
 }
 
 export class RBRToken implements CommonToken<TokenType> {
@@ -101,7 +101,7 @@ export class RBRToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['rbr'];
     }
-    type = TokenType.RBR;
+    type: TokenType.RBR = TokenType.RBR;
 }
 
 export class LangToken implements CommonToken<TokenType> {
@@ -112,7 +112,7 @@ export class LangToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['lang'];
     }
-    type = TokenType.LANG;
+    type: TokenType.LANG = TokenType.LANG;
 }
 
 export class RowToken implements CommonToken<TokenType> {
@@ -123,7 +123,7 @@ export class RowToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['row'];
     }
-    type = TokenType.ROW;
+    type: TokenType.ROW = TokenType.ROW;
 }
 
 export class TokenToken implements CommonToken<TokenType> {
@@ -134,7 +134,7 @@ export class TokenToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['token'];
     }
-    type = TokenType.TOKEN;
+    type: TokenType.TOKEN = TokenType.TOKEN;
 }
 
 export class NodeToken implements CommonToken<TokenType> {
@@ -145,7 +145,7 @@ export class NodeToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['node'];
     }
-    type = TokenType.NODE;
+    type: TokenType.NODE = TokenType.NODE;
 }
 
 export class StrToken implements CommonToken<TokenType> {
@@ -156,7 +156,7 @@ export class StrToken implements CommonToken<TokenType> {
     get kudoaBody(): string[] {
         return ['str', this.value];
     }
-    type = TokenType.STR;
+    type: TokenType.STR = TokenType.STR;
 }
 
 export type Token =

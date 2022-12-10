@@ -73,3 +73,7 @@ export abstract class TokenStream<T extends Token = Token> {
             .replace(/\]/g, '\\]');
     }
 }
+
+export interface TokenStreamConstructor<T extends Token = Token> {
+    new (): TokenStream<T>;
+}

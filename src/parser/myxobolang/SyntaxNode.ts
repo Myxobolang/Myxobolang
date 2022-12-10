@@ -11,7 +11,7 @@ export enum NodeType {
 type BaseNode = SyntaxNode<Node, NodeType, TokenType, Token>;
 
 export class MyxobolangNode implements BaseNode {
-    type = NodeType.MYXOBOLANG;
+    type: NodeType.MYXOBOLANG = NodeType.MYXOBOLANG;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as Node).origin;
         this.children.push(...this.flatTokens(args[0] as TokensNode));
@@ -20,7 +20,7 @@ export class MyxobolangNode implements BaseNode {
         if (node.children.length == 1) {
             return [node.children[0]];
         } else {
-            return [node.children[0], ...this.flatTokens(node.children[1])];
+            return [node.children[0], ...this.flatTokens(node.children[1] as TokensNode)];
         }
     }
     origin: Token;
@@ -31,7 +31,7 @@ export class MyxobolangNode implements BaseNode {
 }
 
 export class TokensNode implements BaseNode {
-    type = NodeType.TOKENS;
+    type: NodeType.TOKENS = NodeType.TOKENS;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as Node).origin;
         this.children.push(args[0] as Node);
@@ -47,7 +47,7 @@ export class TokensNode implements BaseNode {
 }
 
 export class NamespaceNode implements BaseNode {
-    type = NodeType.NAMESPACE;
+    type: NodeType.NAMESPACE = NodeType.NAMESPACE;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as TokenNode).origin;
         for (let i = 0; i < 4; i++) {
@@ -62,7 +62,7 @@ export class NamespaceNode implements BaseNode {
 }
 
 export class TokenNode implements BaseNode {
-    type = NodeType.TOKEN;
+    type: NodeType.TOKEN = NodeType.TOKEN;
     constructor(...args: (Token | Node)[]) {
         this.origin = args[0] as Token;
     }

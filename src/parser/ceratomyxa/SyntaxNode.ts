@@ -13,7 +13,7 @@ export enum NodeType {
 type BaseNode = SyntaxNode<Node, NodeType, TokenType, Token>;
 
 export class CeratomyxaNode implements BaseNode {
-    type = NodeType.CERATOMYXA;
+    type: NodeType.CERATOMYXA = NodeType.CERATOMYXA;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as Node).origin;
         this.children.push(...this.flatTokens(args[0] as TokensNode));
@@ -22,7 +22,7 @@ export class CeratomyxaNode implements BaseNode {
         if (node.children.length == 1) {
             return [node.children[0]];
         } else {
-            return [node.children[0], ...this.flatTokens(node.children[1])];
+            return [node.children[0], ...this.flatTokens(node.children[1] as TokensNode)];
         }
     }
     origin: Token;
@@ -33,7 +33,7 @@ export class CeratomyxaNode implements BaseNode {
 }
 
 export class TokensNode implements BaseNode {
-    type = NodeType.TOKENS;
+    type: NodeType.TOKENS = NodeType.TOKENS;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as Node).origin;
         this.children.push((args[0] as TokenNode).children[0]);
@@ -49,7 +49,7 @@ export class TokensNode implements BaseNode {
 }
 
 export class TokenNode implements BaseNode {
-    type = NodeType.TOKEN;
+    type: NodeType.TOKEN = NodeType.TOKEN;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as Node).origin;
         this.children.push(args[0] as Node);
@@ -62,7 +62,7 @@ export class TokenNode implements BaseNode {
 }
 
 export class MacroDefNode implements BaseNode {
-    type = NodeType.MACRO_DEF;
+    type: NodeType.MACRO_DEF = NodeType.MACRO_DEF;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as BaseTokenNode).origin;
         this.children.push(args[0] as Node);
@@ -75,7 +75,7 @@ export class MacroDefNode implements BaseNode {
         if (node.children.length == 1) {
             return [node.children[0]];
         } else {
-            return [node.children[0], ...this.flatBody(node.children[1])];
+            return [node.children[0], ...this.flatBody(node.children[1] as MacroBodyNode)];
         }
     }
     origin: Token;
@@ -86,7 +86,7 @@ export class MacroDefNode implements BaseNode {
 }
 
 export class MacroBodyNode implements BaseNode {
-    type = NodeType.MACRO_BODY;
+    type: NodeType.MACRO_BODY = NodeType.MACRO_BODY;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as Node).origin;
         this.children.push(args[0] as Node);
@@ -102,7 +102,7 @@ export class MacroBodyNode implements BaseNode {
 }
 
 export class BaseTokenNode implements BaseNode {
-    type = NodeType.BASE_TOKEN;
+    type: NodeType.BASE_TOKEN = NodeType.BASE_TOKEN;
     constructor(...args: (Token | Node)[]) {
         this.origin = args[0] as Token;
     }

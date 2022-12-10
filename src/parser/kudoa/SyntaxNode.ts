@@ -16,7 +16,7 @@ export enum NodeType {
 type BaseNode = SyntaxNode<Node, NodeType, TokenType, Token>;
 
 export class KudoaNode implements BaseNode {
-    type = NodeType.KUDOA;
+    type: NodeType.KUDOA = NodeType.KUDOA;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as LangNode).origin;
         this.children.push(args[0] as LangNode);
@@ -26,7 +26,7 @@ export class KudoaNode implements BaseNode {
         if (node.children.length == 1) {
             return [node.children[0]];
         } else {
-            return [node.children[0], ...this.flatRows(node.children[1])];
+            return [node.children[0], ...this.flatRows(node.children[1] as RowsNode)];
         }
     }
     origin: Token;
@@ -37,7 +37,7 @@ export class KudoaNode implements BaseNode {
 }
 
 export class LangNode implements BaseNode {
-    type = NodeType.LANG;
+    type: NodeType.LANG = NodeType.LANG;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[2] as BaseTokenNode).origin;
         for (let i = 0; i < 8; i++) {
@@ -52,7 +52,7 @@ export class LangNode implements BaseNode {
 }
 
 export class RowsNode implements BaseNode {
-    type = NodeType.ROWS;
+    type: NodeType.ROWS = NodeType.ROWS;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as RowNode).origin;
         this.children.push(args[0] as RowNode);
@@ -68,7 +68,7 @@ export class RowsNode implements BaseNode {
 }
 
 export class RowNode implements BaseNode {
-    type = NodeType.ROW;
+    type: NodeType.ROW = NodeType.ROW;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[2] as BaseTokenNode).origin;
         for (let i = 0; i < 8; i++) {
@@ -82,7 +82,7 @@ export class RowNode implements BaseNode {
         if (node.children.length == 1) {
             return [node.children[0]];
         } else {
-            return [node.children[0], ...this.flatTokens(node.children[1])];
+            return [node.children[0], ...this.flatTokens(node.children[1] as TokensNode)];
         }
     }
     origin: Token;
@@ -93,7 +93,7 @@ export class RowNode implements BaseNode {
 }
 
 export class TokensNode implements BaseNode {
-    type = NodeType.TOKENS;
+    type: NodeType.TOKENS = NodeType.TOKENS;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as TokenBodyNode).origin;
         this.children.push(args[0] as TokenBodyNode);
@@ -109,7 +109,7 @@ export class TokensNode implements BaseNode {
 }
 
 export class TokenNode implements BaseNode {
-    type = NodeType.TOKEN;
+    type: NodeType.TOKEN = NodeType.TOKEN;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[2] as BaseTokenNode).origin;
         this.children.push(args[0] as BaseTokenNode);
@@ -123,7 +123,7 @@ export class TokenNode implements BaseNode {
         if (node.children.length == 1) {
             return [node.children[0]];
         } else {
-            return [node.children[0], ...this.flatBody(node.children[1])];
+            return [node.children[0], ...this.flatBody(node.children[1] as TokenBodiesNode)];
         }
     }
     origin: Token;
@@ -134,7 +134,7 @@ export class TokenNode implements BaseNode {
 }
 
 export class TokenBodiesNode implements BaseNode {
-    type = NodeType.TOKEN_BODIES;
+    type: NodeType.TOKEN_BODIES = NodeType.TOKEN_BODIES;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as TokenBodyNode).origin;
         this.children.push(args[0] as TokenBodyNode);
@@ -150,7 +150,7 @@ export class TokenBodiesNode implements BaseNode {
 }
 
 export class TokenBodyNode implements BaseNode {
-    type = NodeType.TOKEN_BODY;
+    type: NodeType.TOKEN_BODY = NodeType.TOKEN_BODY;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[1] as BaseNode).origin;
         this.children.push(args[0] as BaseTokenNode);
@@ -165,7 +165,7 @@ export class TokenBodyNode implements BaseNode {
 }
 
 export class BaseTokenNode implements BaseNode {
-    type = NodeType.BASE_TOKEN;
+    type: NodeType.BASE_TOKEN = NodeType.BASE_TOKEN;
     constructor(...args: (Token | Node)[]) {
         this.origin = args[0] as Token;
     }

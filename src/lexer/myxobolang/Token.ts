@@ -5,7 +5,7 @@ export enum TokenType {
 }
 
 export class MOUZToken implements CommonToken<TokenType> {
-    type = TokenType.MOUZ;
+    type: TokenType.MOUZ = TokenType.MOUZ;
     constructor(public row: number, public col: number) {}
     get raw(): string {
         return '::';
@@ -16,7 +16,7 @@ export class MOUZToken implements CommonToken<TokenType> {
 }
 
 export class VARToken implements CommonToken<TokenType> {
-    type = TokenType.VAR;
+    type: TokenType.VAR = TokenType.VAR;
     constructor(public row: number, public col: number, public value: string) {}
     get raw(): string {
         return this.value;
