@@ -5,6 +5,7 @@
 #define yyFlexLexer dcFlexLexer
 
 #include <fstream>
+#include <sstream>
 
 using namespace Napi;
 
@@ -21,6 +22,16 @@ External<DicaudaLexer> dicaudaLexer::initLexer(const CallbackInfo &info)
         if (!f->is_open())
             Error::New(env, std::string("Cannot open file ") + file).ThrowAsJavaScriptException();
         auto lexer = new DicaudaLexer(f);
+        return External<DicaudaLexer>::New(env, lexer);
+    }
+
+    if (info.Length() == 2)
+    {
+        if (!info[0].IsString())
+            TypeError::New(env, "Invalid parameter").ThrowAsJavaScriptException();
+        auto source = info[0].As<String>().Utf8Value();
+        auto s = new std::stringstream(source);
+        auto lexer = new DicaudaLexer(s);
         return External<DicaudaLexer>::New(env, lexer);
     }
 

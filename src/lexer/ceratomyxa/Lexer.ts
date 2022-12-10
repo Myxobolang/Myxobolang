@@ -10,7 +10,7 @@ interface LexResult {
 }
 
 interface CppLib {
-    initLexer(fileName?: string): External;
+    initLexer(fileName?: string, isStr?: true): External;
     deleteLexer(lexer: External): void;
     lex(lexer: External): LexResult;
 }
@@ -49,6 +49,17 @@ export class Lexer extends CommonLexer<TokenStream> {
     }
     lexFile(fileName: string): TokenStream {
         const lexer = cppLib.initLexer(fileName);
+        const out = new TokenStream();
+        try {
+            this.lex(lexer, out);
+        } catch (e) {
+            cppLib.deleteLexer(lexer);
+            throw e;
+        }
+        return out;
+    }
+    lexString(str: string): TokenStream {
+        const lexer = cppLib.initLexer(str, true);
         const out = new TokenStream();
         try {
             this.lex(lexer, out);

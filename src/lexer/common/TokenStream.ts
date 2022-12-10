@@ -4,7 +4,7 @@ export abstract class TokenStream<T extends Token = Token> {
     private tokens: T[] = [];
     private index = 0;
     private stack: number[] = [];
-    protected abstract language: string;
+    abstract readonly language: string;
 
     get(index: number) {
         return this.tokens[index + this.index];
