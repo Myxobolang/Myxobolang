@@ -10,7 +10,8 @@
         "buildjs": "tsc --build"
     },
     "dependencies": {
-        "node-addon-api": "^5.0.0"
+        "node-addon-api": "^5.0.0",
+        "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {
         "@types/node": "^18.11.9",

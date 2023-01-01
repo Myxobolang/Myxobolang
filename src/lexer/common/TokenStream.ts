@@ -47,12 +47,34 @@ export abstract class TokenStream<T extends Token = Token> {
                 lastRow = token.row;
             }
             const tokenBody = token.kudoaBody;
-            let temp = `[${tokenBody.length}]`;
+            let temp = '';
             for (let j = 0; j < tokenBody.length; j++) {
                 temp += `[${TokenStream.genString(tokenBody[j])}]`;
             }
-            out += `{[token][${token.col}]${temp}}`;
+            out += `{[token][${token.col}][${token.type}]${temp}}`;
         }
+        return out;
+    }
+
+    toRaw() {
+        let out = '';
+        let currentRow = '';
+        let currentRowId = 0;
+
+        this.tokens.forEach((token) => {
+            for (; currentRowId < token.row; currentRowId++) {
+                out += currentRow;
+                out += '\n';
+                currentRow = '';
+            }
+            const currentCol = currentRow.length;
+            for (let i = currentCol; i < token.col; i++) {
+                currentRow += ' ';
+            }
+            currentRow += token.raw;
+        });
+        out += currentRow;
+        out += '\n';
         return out;
     }
 

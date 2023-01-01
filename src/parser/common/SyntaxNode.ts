@@ -10,6 +10,7 @@ export interface SyntaxNode<
     origin: O;
     children: D[];
     get dicaudaBody(): string[];
+    fromDicaudaBody(dicaudaBody: string[]): void;
 }
 
 export interface SyntaxNodeConstructor<

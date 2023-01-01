@@ -1,4 +1,5 @@
 import type { Token, TokenType } from '../../lexer/myxobolang';
+import { syntaxNode } from '../../util';
 import type { SyntaxNode } from '../common';
 
 export enum NodeType {
@@ -10,6 +11,7 @@ export enum NodeType {
 
 type BaseNode = SyntaxNode<Node, NodeType, TokenType, Token>;
 
+@syntaxNode('Myxobolang', NodeType.MYXOBOLANG)
 export class MyxobolangNode implements BaseNode {
     type: NodeType.MYXOBOLANG = NodeType.MYXOBOLANG;
     constructor(...args: (Token | Node)[]) {
@@ -26,10 +28,12 @@ export class MyxobolangNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['myxobolang'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Myxobolang', NodeType.TOKENS)
 export class TokensNode implements BaseNode {
     type: NodeType.TOKENS = NodeType.TOKENS;
     constructor(...args: (Token | Node)[]) {
@@ -42,10 +46,12 @@ export class TokensNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['tokens'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Myxobolang', NodeType.NAMESPACE)
 export class NamespaceNode implements BaseNode {
     type: NodeType.NAMESPACE = NodeType.NAMESPACE;
     constructor(...args: (Token | Node)[]) {
@@ -57,10 +63,12 @@ export class NamespaceNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['namespace'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Myxobolang', NodeType.TOKEN)
 export class TokenNode implements BaseNode {
     type: NodeType.TOKEN = NodeType.TOKEN;
     constructor(...args: (Token | Node)[]) {
@@ -69,8 +77,9 @@ export class TokenNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['token'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
 export type Node = MyxobolangNode | TokensNode | NamespaceNode | TokenNode;

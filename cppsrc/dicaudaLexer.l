@@ -7,7 +7,7 @@
 %option yyclass="DicaudaLexer"
 %option prefix="dc"
 
-TokenAsc [\x21-\x5a\x5e-\x7a\x7c\x7e]
+TokenAsc [\x21-\x27\x2a-\x3b\x3d\x3f-\x5a\x5e-\x7a\x7c\x7e]
 TokenSpecial (\\\{)|(\\\})|(\\\[)|(\\\])|(\\\<)|(\\\>)|(\\\()|(\\\))|(\\.)|(::)
 TokenStr (lang)|(row)|(token)|(node)
 

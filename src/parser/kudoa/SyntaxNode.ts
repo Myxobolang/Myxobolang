@@ -1,4 +1,5 @@
 import type { Token, TokenType } from '../../lexer/kudoa';
+import { syntaxNode } from '../../util';
 import type { SyntaxNode } from '../common';
 
 export enum NodeType {
@@ -15,6 +16,7 @@ export enum NodeType {
 
 type BaseNode = SyntaxNode<Node, NodeType, TokenType, Token>;
 
+@syntaxNode('Kudoa', NodeType.KUDOA)
 export class KudoaNode implements BaseNode {
     type: NodeType.KUDOA = NodeType.KUDOA;
     constructor(...args: (Token | Node)[]) {
@@ -32,10 +34,12 @@ export class KudoaNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['kudoa'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.LANG)
 export class LangNode implements BaseNode {
     type: NodeType.LANG = NodeType.LANG;
     constructor(...args: (Token | Node)[]) {
@@ -47,10 +51,12 @@ export class LangNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['lang'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.ROWS)
 export class RowsNode implements BaseNode {
     type: NodeType.ROWS = NodeType.ROWS;
     constructor(...args: (Token | Node)[]) {
@@ -63,10 +69,12 @@ export class RowsNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['rows'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.ROW)
 export class RowNode implements BaseNode {
     type: NodeType.ROW = NodeType.ROW;
     constructor(...args: (Token | Node)[]) {
@@ -88,26 +96,30 @@ export class RowNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['row'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.TOKENS)
 export class TokensNode implements BaseNode {
     type: NodeType.TOKENS = NodeType.TOKENS;
     constructor(...args: (Token | Node)[]) {
-        this.origin = (args[0] as TokenBodyNode).origin;
-        this.children.push(args[0] as TokenBodyNode);
+        this.origin = (args[0] as TokenNode).origin;
+        this.children.push(args[0] as TokenNode);
         if (args.length == 2) {
-            this.children.push(args[1] as TokenBodyNode);
+            this.children.push(args[1] as TokenNode);
         }
     }
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['tokens'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.TOKEN)
 export class TokenNode implements BaseNode {
     type: NodeType.TOKEN = NodeType.TOKEN;
     constructor(...args: (Token | Node)[]) {
@@ -129,10 +141,12 @@ export class TokenNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['token'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.TOKEN_BODIES)
 export class TokenBodiesNode implements BaseNode {
     type: NodeType.TOKEN_BODIES = NodeType.TOKEN_BODIES;
     constructor(...args: (Token | Node)[]) {
@@ -145,10 +159,12 @@ export class TokenBodiesNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['tokenBodies'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.TOKEN_BODY)
 export class TokenBodyNode implements BaseNode {
     type: NodeType.TOKEN_BODY = NodeType.TOKEN_BODY;
     constructor(...args: (Token | Node)[]) {
@@ -160,10 +176,12 @@ export class TokenBodyNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['tokenBody'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Kudoa', NodeType.BASE_TOKEN)
 export class BaseTokenNode implements BaseNode {
     type: NodeType.BASE_TOKEN = NodeType.BASE_TOKEN;
     constructor(...args: (Token | Node)[]) {
@@ -172,8 +190,9 @@ export class BaseTokenNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['baseToken'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
 export type Node =

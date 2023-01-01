@@ -1,5 +1,6 @@
 import type { SyntaxNode } from '../common';
 import type { TokenType, Token } from '../../lexer/ceratomyxa';
+import { syntaxNode } from '../../util';
 
 export enum NodeType {
     CERATOMYXA,
@@ -12,6 +13,7 @@ export enum NodeType {
 
 type BaseNode = SyntaxNode<Node, NodeType, TokenType, Token>;
 
+@syntaxNode('Ceratomyxa', NodeType.CERATOMYXA)
 export class CeratomyxaNode implements BaseNode {
     type: NodeType.CERATOMYXA = NodeType.CERATOMYXA;
     constructor(...args: (Token | Node)[]) {
@@ -28,10 +30,12 @@ export class CeratomyxaNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['ceratomyxa'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Ceratomyxa', NodeType.TOKENS)
 export class TokensNode implements BaseNode {
     type: NodeType.TOKENS = NodeType.TOKENS;
     constructor(...args: (Token | Node)[]) {
@@ -44,10 +48,12 @@ export class TokensNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['tokens'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Ceratomyxa', NodeType.TOKEN)
 export class TokenNode implements BaseNode {
     type: NodeType.TOKEN = NodeType.TOKEN;
     constructor(...args: (Token | Node)[]) {
@@ -57,10 +63,12 @@ export class TokenNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['token'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Ceratomyxa', NodeType.MACRO_DEF)
 export class MacroDefNode implements BaseNode {
     type: NodeType.MACRO_DEF = NodeType.MACRO_DEF;
     constructor(...args: (Token | Node)[]) {
@@ -81,10 +89,12 @@ export class MacroDefNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['macroDef'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Ceratomyxa', NodeType.MACRO_BODY)
 export class MacroBodyNode implements BaseNode {
     type: NodeType.MACRO_BODY = NodeType.MACRO_BODY;
     constructor(...args: (Token | Node)[]) {
@@ -97,10 +107,12 @@ export class MacroBodyNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['macroBody'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
+@syntaxNode('Ceratomyxa', NodeType.BASE_TOKEN)
 export class BaseTokenNode implements BaseNode {
     type: NodeType.BASE_TOKEN = NodeType.BASE_TOKEN;
     constructor(...args: (Token | Node)[]) {
@@ -109,8 +121,9 @@ export class BaseTokenNode implements BaseNode {
     origin: Token;
     children: Node[] = [];
     get dicaudaBody(): string[] {
-        return ['baseToken'];
+        return [];
     }
+    fromDicaudaBody(dicaudaBody: string[]): void {}
 }
 
 export type Node = CeratomyxaNode | TokensNode | TokenNode | MacroDefNode | MacroBodyNode | BaseTokenNode;
