@@ -1,4 +1,4 @@
-import { Lexer as CommonLexer, LexerError } from '../common';
+import { Lexer as CommonLexer } from '../common';
 import { MOUZToken, TokenType, VARToken } from './Token';
 import { TokenStream } from './TokenStream';
 interface LexResult {

@@ -19,7 +19,7 @@ export abstract class TokenStream<T extends Token = Token> {
     }
 
     prev() {
-        return this.tokens[this.index++];
+        return this.tokens[this.index--];
     }
 
     push() {
@@ -35,6 +35,10 @@ export abstract class TokenStream<T extends Token = Token> {
 
     isEmpty() {
         return this.index >= this.tokens.length;
+    }
+
+    size() {
+        return this.tokens.length - this.index;
     }
 
     toKudoa() {

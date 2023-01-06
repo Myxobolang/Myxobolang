@@ -1,5 +1,32 @@
-import { Lexer as CommonLexer, LexerError } from '../common';
-import { MacroToken, MToken, VToken, TokenType, AsToken, EndmToken } from './Token';
+import { Lexer as CommonLexer } from '../common';
+import {
+    ArrayToken,
+    BreakToken,
+    CharToken,
+    CommaToken,
+    DOToken,
+    ElseToken,
+    EndsToken,
+    EQToken,
+    FloatToken,
+    FunctionToken,
+    IfToken,
+    IntToken,
+    LBRToken,
+    LSBRToken,
+    IToken,
+    MOToken,
+    RBRToken,
+    ReturnToken,
+    RSBRToken,
+    FToken,
+    TokenType,
+    ValToken,
+    VarToken,
+    VoidToken,
+    VToken,
+    WhileToken,
+} from './Token';
 import { TokenStream } from './TokenStream';
 interface LexResult {
     result: number;
@@ -21,18 +48,56 @@ export class Lexer extends CommonLexer<TokenStream> {
     private lex(lexer: External, stream: TokenStream) {
         let result: LexResult;
         while ((result = cppLib.lex(lexer)).result != 0) {
-            if (result.result == TokenType.MACRO) {
-                stream.add(new MacroToken(result.row, result.col));
-            } else if (result.result == TokenType.AS) {
-                stream.add(new AsToken(result.row, result.col));
-            } else if (result.result == TokenType.ENDM) {
-                stream.add(new EndmToken(result.row, result.col));
-            } else if (result.result == TokenType.M) {
-                stream.add(new MToken(result.row, result.col, result.text));
+            if (result.result == TokenType.BREAK) {
+                stream.add(new BreakToken(result.row, result.col));
+            } else if (result.result == TokenType.CHAR) {
+                stream.add(new CharToken(result.row, result.col));
+            } else if (result.result == TokenType.DO) {
+                stream.add(new DOToken(result.row, result.col, result.text));
+            } else if (result.result == TokenType.ELSE) {
+                stream.add(new ElseToken(result.row, result.col));
+            } else if (result.result == TokenType.EQ) {
+                stream.add(new EQToken(result.row, result.col));
+            } else if (result.result == TokenType.FLOAT) {
+                stream.add(new FloatToken(result.row, result.col));
+            } else if (result.result == TokenType.FUNCTION) {
+                stream.add(new FunctionToken(result.row, result.col));
+            } else if (result.result == TokenType.IF) {
+                stream.add(new IfToken(result.row, result.col));
+            } else if (result.result == TokenType.INT) {
+                stream.add(new IntToken(result.row, result.col));
+            } else if (result.result == TokenType.LBR) {
+                stream.add(new LBRToken(result.row, result.col));
+            } else if (result.result == TokenType.LSBR) {
+                stream.add(new LSBRToken(result.row, result.col));
+            } else if (result.result == TokenType.I) {
+                stream.add(new IToken(result.row, result.col, result.text));
+            } else if (result.result == TokenType.MO) {
+                stream.add(new MOToken(result.row, result.col, result.text));
+            } else if (result.result == TokenType.RBR) {
+                stream.add(new RBRToken(result.row, result.col));
+            } else if (result.result == TokenType.RETURN) {
+                stream.add(new ReturnToken(result.row, result.col));
+            } else if (result.result == TokenType.RSBR) {
+                stream.add(new RSBRToken(result.row, result.col));
+            } else if (result.result == TokenType.F) {
+                stream.add(new FToken(result.row, result.col, result.text));
             } else if (result.result == TokenType.V) {
                 stream.add(new VToken(result.row, result.col, result.text));
+            } else if (result.result == TokenType.VAL) {
+                stream.add(new ValToken(result.row, result.col));
+            } else if (result.result == TokenType.VAR) {
+                stream.add(new VarToken(result.row, result.col));
+            } else if (result.result == TokenType.WHILE) {
+                stream.add(new WhileToken(result.row, result.col));
+            } else if (result.result == TokenType.ENDS) {
+                stream.add(new EndsToken(result.row, result.col));
+            } else if (result.result == TokenType.COMMA) {
+                stream.add(new CommaToken(result.row, result.col));
+            } else if (result.result == TokenType.VOID) {
+                stream.add(new VoidToken(result.row, result.col));
             } else {
-                throw new LexerError(result.text, result.row, result.col, new Error());
+                stream.add(new ArrayToken(result.row, result.col));
             }
         }
     }
