@@ -3,7 +3,20 @@
         "new": "cpp",
         "fstream": "cpp"
     },
-    "cSpell.words": ["cflags", "froms", "LCBR", "leng", "LSBR", "LSTR", "Myxobolus", "RCBR", "RSBR", "RSTR"],
+    "cSpell.words": [
+        "alloca",
+        "cflags",
+        "froms",
+        "LCBR",
+        "leng",
+        "LSBR",
+        "LSTR",
+        "Myxobolus",
+        "RCBR",
+        "RSBR",
+        "RSTR",
+        "vals"
+    ],
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.formatOnType": true

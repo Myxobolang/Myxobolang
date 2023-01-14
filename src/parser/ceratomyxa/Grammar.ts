@@ -779,7 +779,7 @@ export class ArrayGrammar extends SimpleGrammar<GrammarType, TokenType> {
             },
             {
                 type: NameType.TOKEN,
-                value: TokenType.V,
+                value: TokenType.I,
             },
         ]);
     }

@@ -1,3 +1,4 @@
+import type { type } from 'os';
 import type { Token, TokenType } from '../../lexer/ceratomyxa';
 import { syntaxNode } from '../../util';
 import type { SyntaxNode } from '../common';
@@ -54,6 +55,12 @@ export class CeratomyxaNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    globalAmount() {
+        return this.children.length;
+    }
+    global(index: number) {
+        return this.children[index] as GlobalNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.GLOBALS)
@@ -87,6 +94,9 @@ export class GlobalNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    value() {
+        return this.children[0] as FunctionDeclNode | FunctionNode | VarNode | ValNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.FUNCTION_DECL)
@@ -115,6 +125,19 @@ export class FunctionDeclNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+
+    returnType() {
+        return this.children[1] as TypeNode;
+    }
+    paramAmount() {
+        return this.children.length - 6;
+    }
+    param(index: number) {
+        return this.children[index + 4] as ParamNode;
+    }
+    functionName() {
+        return this.children[2] as TokenNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.FUNCTION)
@@ -145,6 +168,23 @@ export class FunctionNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+
+    functionName() {
+        return this.children[2] as TokenNode;
+    }
+
+    returnType() {
+        return this.children[1] as TypeNode;
+    }
+    paramAmount() {
+        return this.children.length - 8;
+    }
+    param(index: number) {
+        return this.children[index + 4] as ParamNode;
+    }
+    body() {
+        return this.children[7] as BlockNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.PARAM_LIST)
@@ -171,9 +211,7 @@ export class ParamNode implements BaseNode {
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as TokenNode).origin;
         this.children.push(args[0] as Node);
-        if (args.length >= 2) {
-            this.children.push(args[1] as Node);
-        }
+        this.children.push(args[1] as Node);
         if (args.length == 3) {
             this.children.push(args[2] as Node);
         }
@@ -184,6 +222,15 @@ export class ParamNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    isVoid() {
+        return this.children.length == 2;
+    }
+    paramType() {
+        return this.children[0] as TypeNode;
+    }
+    paramName() {
+        return this.children[1] as TokenNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.BLOCK)
@@ -209,6 +256,12 @@ export class BlockNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    sentenceAmount() {
+        return this.children.length;
+    }
+    sentence(index: number) {
+        return this.children[index] as SentenceNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.SENTENCES)
@@ -242,6 +295,54 @@ export class SentenceNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    isVar() {
+        return this.children[0].type == NodeType.VAR;
+    }
+    isVal() {
+        return this.children[0].type == NodeType.VAL;
+    }
+    isSetVar() {
+        return this.children[0].type == NodeType.SET_VAR;
+    }
+    isIfElse() {
+        return this.children[0].type == NodeType.IF_ELSE;
+    }
+    isIf() {
+        return this.children[0].type == NodeType.IF;
+    }
+    isWhile() {
+        return this.children[0].type == NodeType.WHILE;
+    }
+    isBreak() {
+        return this.children[0].type == NodeType.BREAK;
+    }
+    isReturn() {
+        return this.children[0].type == NodeType.RETURN;
+    }
+    asVar() {
+        return this.children[0] as VarNode;
+    }
+    asVal() {
+        return this.children[0] as ValNode;
+    }
+    asSetVar() {
+        return this.children[0] as SetVarNode;
+    }
+    asIfElse() {
+        return this.children[0] as IfElseNode;
+    }
+    asIf() {
+        return this.children[0] as IfNode;
+    }
+    asWhile() {
+        return this.children[0] as WhileNode;
+    }
+    asBreak() {
+        return this.children[0] as BreakNode;
+    }
+    asReturn() {
+        return this.children[0] as ReturnNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.VAR)
@@ -262,6 +363,17 @@ export class VarNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    varType() {
+        return this.children[1] as TypeNode;
+    }
+
+    varName() {
+        return this.children[2] as TokenNode;
+    }
+
+    initialValue() {
+        return this.children[4] as CalNode | ArrayNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.VAL)
@@ -282,6 +394,17 @@ export class ValNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    valType() {
+        return this.children[1] as TypeNode;
+    }
+
+    valName() {
+        return this.children[2] as TokenNode;
+    }
+
+    initialValue() {
+        return this.children[4] as CalNode | ArrayNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.SET_VAR)
@@ -289,10 +412,17 @@ export class SetVarNode implements BaseNode {
     type: NodeType.SET_VAR = NodeType.SET_VAR;
     constructor(...args: (Token | Node)[]) {
         this.origin = (args[0] as TokenNode).origin;
-        this.children.push(args[0] as Node);
-        this.children.push(args[1] as Node);
-        this.children.push(args[2] as Node);
-        this.children.push(args[3] as Node);
+        if (args.length == 4) {
+            this.children.push(args[0] as Node);
+            this.children.push(args[1] as Node);
+            this.children.push(args[2] as Node);
+            this.children.push(args[3] as Node);
+        } else {
+            this.children.push(new MoNode(args[0], args[1]));
+            this.children.push(args[2] as Node);
+            this.children.push(args[3] as Node);
+            this.children.push(args[4] as Node);
+        }
     }
     origin: Token;
     children: Node[] = [];
@@ -300,6 +430,13 @@ export class SetVarNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+
+    varName() {
+        return this.children[0] as TokenNode | MoNode;
+    }
+    newValue() {
+        return this.children[2] as CalNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.CAL)
@@ -332,6 +469,15 @@ export class IfElseNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    condition() {
+        return this.children[2] as CalNode;
+    }
+    ifBlock() {
+        return this.children[5] as BlockNode;
+    }
+    elseBlock() {
+        return this.children[9] as BlockNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.IF)
@@ -349,6 +495,12 @@ export class IfNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    condition() {
+        return this.children[2] as CalNode;
+    }
+    ifBlock() {
+        return this.children[5] as BlockNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.WHILE)
@@ -366,6 +518,12 @@ export class WhileNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    condition() {
+        return this.children[2] as CalNode;
+    }
+    whileBlock() {
+        return this.children[5] as BlockNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.BREAK)
@@ -399,6 +557,9 @@ export class ReturnNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    returnValue() {
+        return this.children[1] as CalNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.RETURN_EMPTY)
@@ -433,6 +594,12 @@ export class TypeNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    isPtr() {
+        return this.children.length == 2;
+    }
+    originType() {
+        return this.children[1] as TypeNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.ARRAY)
@@ -450,6 +617,12 @@ export class ArrayNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    elementType() {
+        return this.children[1] as TypeNode;
+    }
+    arrayLength() {
+        return this.children[2] as TokenNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.MO)
@@ -466,6 +639,14 @@ export class MoNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+
+    op() {
+        return this.children[0] as TokenNode;
+    }
+
+    param() {
+        return this.children[1] as MoNode | DoNode | FunctionUseNode | TokenNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.DO)
@@ -483,6 +664,15 @@ export class DoNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    op() {
+        return this.children[1] as TokenNode;
+    }
+    lParam() {
+        return this.children[0] as MoNode | DoNode | FunctionUseNode | TokenNode;
+    }
+    rParam() {
+        return this.children[2] as MoNode | DoNode | FunctionUseNode | TokenNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.FUNCTION_USE)
@@ -498,6 +688,15 @@ export class FunctionUseNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+    functionName() {
+        return this.children[0] as TokenNode;
+    }
+    paramAmount() {
+        return this.children.length - 3;
+    }
+    param(index: number) {
+        return this.children[index + 2] as UseParamNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.USE_PARAM)
@@ -513,6 +712,10 @@ export class UseParamNode implements BaseNode {
         return [];
     }
     fromDicaudaBody(dicaudaBody: string[]): void {}
+
+    value() {
+        return this.children[0] as CalNode;
+    }
 }
 
 @syntaxNode('Ceratomyxa', NodeType.TOKEN)
